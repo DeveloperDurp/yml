@@ -17,8 +17,34 @@ build-container:
     # Begin of docker-build.sh
     - |
       #Build Docker Container
-      docker build -t $CI_REGISTRY/$CI_PROJECT_PATH:latest .
+      docker build -t $CI_REGISTRY/$CI_PROJECT_PATH:$GITVERSION -t $CI_REGISTRY/$CI_PROJECT_PATH:latest .
       docker push "$CI_REGISTRY/$CI_PROJECT_PATH:latest"
+      docker push "$CI_REGISTRY/$CI_PROJECT_PATH:$GITVERSION"
     # End of docker-build.sh
+  only:
+    - main
+HelmChart:
+  image: dtzar/helm-kubectl
+  stage: build
+  script:
+    # Begin of helm-addrepo.sh
+    - |
+      #Helm repo add
+      helm repo add --username gitlab-ci-token --password ${CI_JOB_TOKEN} ${CI_PROJECT_NAME} ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/helm/stable
+    # End of helm-addrepo.sh
+
+    # Begin of helm-package.sh
+    - |
+      #Helm Package
+      for chart in charts/*; do
+        if [ -d "$chart" ]; then
+          helm package "$chart" -d ./packages --version ${GITVERSION}
+        fi
+      done
+    # End of helm-package.sh
+
+    # Begin of helm-push.sh
+    - "#Helm Push    \n    \nhelm plugin install https://github.com/chartmuseum/helm-push\nfor chart in packages/*; do\n    helm cm-push ./$chart ${CI_PROJECT_NAME}\ndone\n"
+    # End of helm-push.sh
   only:
     - main
