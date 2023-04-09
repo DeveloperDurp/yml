@@ -1,5 +1,21 @@
 stages:
+  - versioning
   - build
+version:
+  stage: versioning
+  script:
+    - if [ -z "$VERSION" ]; then
+    - VERSION="1"
+    - fi
+    - export COMMIT_COUNT=$(git rev-list --count HEAD)
+    - export BUILD_NUMBER=$CI_PIPELINE_ID
+    - export VERSION="$VERSION.$COMMIT_COUNT.$BUILD_NUMBER"
+    - echo $VERSION > version.env
+    - cat version.env
+    # End of version-number.sh
+  artifacts:
+    reports:
+      dotenv: version.env
 build-container:
   image: docker:20.10.16
   variables:
@@ -17,10 +33,13 @@ build-container:
     # Begin of docker-build.sh
     - |
       #Build Docker Container
-      docker build -t $CI_REGISTRY/$CI_PROJECT_PATH:$GITVERSION -t $CI_REGISTRY/$CI_PROJECT_PATH:latest .
+      docker build -t $CI_REGISTRY/$CI_PROJECT_PATH:$VERSION -t $CI_REGISTRY/$CI_PROJECT_PATH:latest .
       docker push "$CI_REGISTRY/$CI_PROJECT_PATH:latest"
-      docker push "$CI_REGISTRY/$CI_PROJECT_PATH:$GITVERSION"
+      docker push "$CI_REGISTRY/$CI_PROJECT_PATH:$VERSION"
     # End of docker-build.sh
+  needs:
+    - job: version
+      artifacts: true
   only:
     - main
 HelmChart:
@@ -38,7 +57,7 @@ HelmChart:
       #Helm Package
       for chart in charts/*; do
         if [ -d "$chart" ]; then
-          helm package "$chart" -d ./packages --version ${GITVERSION}
+          helm package "$chart" -d ./packages --version ${VERSION}
         fi
       done
     # End of helm-package.sh
@@ -46,5 +65,8 @@ HelmChart:
     # Begin of helm-push.sh
     - "#Helm Push    \n    \nhelm plugin install https://github.com/chartmuseum/helm-push\nfor chart in packages/*; do\n    helm cm-push ./$chart ${CI_PROJECT_NAME}\ndone\n"
     # End of helm-push.sh
+  needs:
+    - job: version
+      artifacts: true
   only:
     - main
