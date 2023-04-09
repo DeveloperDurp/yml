@@ -2,6 +2,7 @@ stages:
   - versioning
   - build
 version:
+  image: ubuntu:latest
   stage: versioning
   script:
     - if [ -z "$VERSION" ]; then
