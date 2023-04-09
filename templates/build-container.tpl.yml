@@ -1,5 +1,6 @@
 stages:
   - build
+
 build-container:
   image: docker:20.10.16
   variables:
@@ -12,3 +13,13 @@ build-container:
     - ./scripts/docker-build.sh
   only:
     - main
+
+HelmChart:
+  image: dtzar/helm-kubectl
+  stage: build
+  script:
+    - ./scripts/helm-addrepo.sh
+    - ./scripts/helm-package.sh
+    - ./scripts/helm-push.sh
+  only:
+    - main    
