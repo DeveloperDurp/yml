@@ -1,11 +1,13 @@
 stages:
   - build
 build-container:
-  image: docker:20.10.17
+  image: docker:20.10.16
   variables:
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""
     DOCKER_HOST: tcp://docker:2375
   services:
-    - docker:20.10.17-dind
+    - docker:20.10.16-dind
   stage: build
   script:
     # Begin of docker-login.sh
