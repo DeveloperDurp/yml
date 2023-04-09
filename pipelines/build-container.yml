@@ -1,3 +1,5 @@
+stages:
+  - build
 build-container:
   image: docker:19.03.12
   variables:
@@ -6,7 +8,7 @@ build-container:
     DOCKER_HOST: tcp://docker:2375
   services:
     - docker:19.03.12-dind
-  stage: package
+  stage: build
   script:
     # Begin of docker-login.sh
     - |
