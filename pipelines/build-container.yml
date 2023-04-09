@@ -1,13 +1,11 @@
 stages:
   - build
 build-container:
-  image: docker:20.10.11-dind
+  image: docker:20.10.16
   variables:
-    DOCKER_DRIVER: overlay2
-    DOCKER_TLS_CERTDIR: ""
+    DOCKER_TLS_CERTDIR: "/certs"
   services:
-    - name: docker:20.10.11-dind
-      alias: docker
+    - docker:20.10.16-dind
   stage: build
   script:
     # Begin of docker-login.sh
