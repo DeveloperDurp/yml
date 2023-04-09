@@ -1,5 +1,14 @@
 stages:
+  - versioning
   - build
+
+version:
+  stage: versioning
+  script:
+    - ./scripts/version-number.sh
+  artifacts:
+    reports:
+      dotenv: version.env
 
 build-container:
   image: docker:20.10.16
@@ -11,6 +20,9 @@ build-container:
   script:
     - ./scripts/docker-login.sh
     - ./scripts/docker-build.sh
+  needs:
+    - job: version
+      artifacts: true
   only:
     - main
 
@@ -21,5 +33,8 @@ HelmChart:
     - ./scripts/helm-addrepo.sh
     - ./scripts/helm-package.sh
     - ./scripts/helm-push.sh
+  needs:
+    - job: version
+      artifacts: true
   only:
     - main    

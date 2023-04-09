@@ -4,6 +4,6 @@
 
 for chart in charts/*; do
   if [ -d "$chart" ]; then
-    helm package "$chart" -d ./packages --version ${GITVERSION}
+    helm package "$chart" -d ./packages --version ${VERSION}
   fi
 done
