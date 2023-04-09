@@ -1,0 +1,24 @@
+build-container:
+  image: docker:19.03.12
+  variables:
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_HOST: tcp://docker:2375
+  services:
+    - docker:19.03.12-dind
+  stage: package
+  script:
+    # Begin of docker-login.sh
+    - |
+      #login to docker
+      docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY/$CI_PROJECT_PATH
+    # End of docker-login.sh
+
+    # Begin of docker-build.sh
+    - |
+      #Build Docker Container
+      docker build -t $CI_REGISTRY/$CI_PROJECT_PATH:$DOCKERTAG -t $CI_REGISTRY/$CI_PROJECT_PATH:latest .
+      docker push "$CI_REGISTRY/$CI_PROJECT_PATH:latest"
+    # End of docker-build.sh
+  only:
+    - main

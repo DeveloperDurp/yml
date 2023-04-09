@@ -1,0 +1,28 @@
+# stages are intentionally not defined, as users need to combine the full list
+#stages:
+#  - test
+#  - render
+
+workflow:
+  rules:
+    # those rules exclude the render commits which are manually triggered in commit-and-push-changes.sh
+    # being so strict about it prevents "skipped merge request pipelines" which block merging as they're preferred
+    - if: '$CI_COMMIT_BRANCH && $CI_SCRIPTS_SKIP_PIPELINE != "true"'
+
+render-job-templates-yml:
+  stage: render
+  image:  debian:bullseye-slim
+  script:
+    - ./scripts/install-curl.sh
+    - ./scripts/install-git.sh
+    - ./scripts/install-yq.sh
+    - ./scripts/render-job-templates.sh
+    - ./scripts/commit-and-push-changes.sh
+  rules:
+    - if: $CI_COMMIT_BRANCH
+      changes:
+        - .gitlab-ci.yml
+        - scripts/**
+        - templates/**        
+        - job-templates.yml
+        - job-templates.tpl.yml

@@ -1,0 +1,57 @@
+### WARNING ###
+### THIS FILE IS RENDERED! DO NOT EDIT! ANY CHANGE WILL BE REVERTED BY RENDERING PIPELINE
+### Edit the template file job-templates.tpl.yml instead!
+# stages are intentionally not defined, as users need to combine the full list
+#stages:
+#  - test
+#  - render
+workflow:
+  rules:
+    # those rules exclude the render commits which are manually triggered in commit-and-push-changes.sh
+    # being so strict about it prevents "skipped merge request pipelines" which block merging as they're preferred
+    - if: '$CI_COMMIT_BRANCH && $CI_SCRIPTS_SKIP_PIPELINE != "true"'
+render-job-templates-yml:
+  stage: render
+  image: debian:bullseye-slim
+  script:
+    # Begin of install-curl.sh
+    - |
+      #Install curl
+      apt update && apt install curl -y
+    # End of install-curl.sh
+
+    # Begin of install-git.sh
+    - |
+      #Install git
+      apt update && apt install git -y
+    # End of install-git.sh
+
+    # Begin of install-yq.sh
+    - "#Install YQ\nexport YQ_VERSION=4.27.2\nexport YQ_ARCH=linux_amd64 \ncurl -fsSL \"https://github.com/mikefarah/yq/releases/download/v${YQ_VERSION}/yq_${YQ_ARCH}\" -o yq \nchmod +x yq\n"
+    # End of install-yq.sh
+
+    # Begin of render-job-templates.sh
+    - "# render job-templates.yml from job-templates.tpl.yml\nset -euo pipefail\nfor script in scripts/*.sh; do\n  awk -v script_name=\"$(basename \"$script\")\" '\n  NR==1 && /^#!/ {printf(\"# Begin of %s\\n\",script_name); next}   # strip shebang in first line, print head comment\n  /^\\s*$/ {next}         # strip any newlines or whitespace\n  /^#%%MULTILINE_YAML_START$/ { print \"- |\"; multiline=1; next } # detect start of multiline yaml block, print \"- |\" into output yml\n  /^#%%MULTILINE_YAML_END$/ { multiline=0; next }                # detect end   of multiline yaml block\n  multiline==1 {printf(\"  %s\\n\",$0)}                             # print indented script of multiline yaml block\n  multiline==0 {printf(\"- !!str %s\\n\",$0)}                       # not in multiline yaml, just print with \"- !!str\" (explicit yaml tag to avoid any quoting)\n  END { printf(\"# End of %s\\n\",script_name) }                    # print trailing comment\n  ' \"$script\" >\"$script.yml\"\ndone\n# start with copy and then edit in place using yq -i\ncat <<EOF >job-templates.yml\n### WARNING ###\n### THIS FILE IS RENDERED! DO NOT EDIT! ANY CHANGE WILL BE REVERTED BY RENDERING PIPELINE\n### Edit the template file job-templates.tpl.yml instead!\nEOF\ncat job-templates.tpl.yml >> job-templates.yml\n# shellcheck disable=SC2016 # \"unquoted $ warning\"\n./yq -i '(.[] | select(keys | .[] | select(tag == \"!!str\") | test(\"^(before_|after_|)script$\")) | .\"*script\") ref $scripts\n       | ($scripts | .. | select(. == \"./scripts/*.sh\")) |= (load(. + \".yml\") | .[] style=\"\")\n       | ($scripts | .[] | select(type == \"!reference\")) |= ([.] | . style=\"flow\")\n       | ($scripts | select(type == \"!!seq\")) |= flatten(1)\n       | explode .\n        ' job-templates.yml\nfor template in templates/*.tpl.yml\n  do \n    export pipeline=$(basename $template | sed \"s/.tpl//\")\n    cat $template > pipelines/$pipeline \n    ./yq -i '(.[] | select(keys | .[] | select(tag == \"!!str\") | test(\"^(before_|after_|)script$\")) | .\"*script\") ref $scripts\n    | ($scripts | .. | select(. == \"./scripts/*.sh\")) |= (load(. + \".yml\") | .[] style=\"\")\n    | ($scripts | .[] | select(type == \"!reference\")) |= ([.] | . style=\"flow\")\n    | ($scripts | select(type == \"!!seq\")) |= flatten(1)\n    | explode .\n    ' pipelines/$pipeline\ndone\n"
+    # End of render-job-templates.sh
+
+    # Begin of commit-and-push-changes.sh
+    - |
+      # commit and push changes in job-templates.yml (if any)
+      git config user.name "DeveloperDurpBot"
+      git config user.email "DeveloperDurp@durp.info"
+      git add -A
+      git commit --untracked-files=no -m "ci: render" -m "Rendered by $CI_PIPELINE_URL" || exit 0
+      echo "Pushing to branch $CI_COMMIT_BRANCH"
+      # just using -o ci.skip would create a "skipped" pipeline in the list of pipelines, preventing a merge!
+      # passing down CI_SCRIPTS_SKIP_PIPELINE and using this in workflow:rules is better, as it does not create a pipeline at all!
+      git push -o ci.variable="CI_SCRIPTS_SKIP_PIPELINE=true" "https://oauth2:${GITLAB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git" "HEAD:$CI_COMMIT_BRANCH"
+      curl --silent --fail --request POST --form token="$CI_JOB_TOKEN" --form ref="$CI_COMMIT_BRANCH" "$CI_API_V4_URL/projects/$CI_PROJECT_ID/trigger/pipeline" >/dev/null
+    # End of commit-and-push-changes.sh
+  rules:
+    - if: $CI_COMMIT_BRANCH
+      changes:
+        - .gitlab-ci.yml
+        - scripts/**
+        - templates/**
+        - job-templates.yml
+        - job-templates.tpl.yml
