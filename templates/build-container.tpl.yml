@@ -3,6 +3,7 @@ stages:
   - build
 
 version:
+  image: ubuntu:latest
   stage: versioning
   script:
     - ./scripts/version-number.sh
