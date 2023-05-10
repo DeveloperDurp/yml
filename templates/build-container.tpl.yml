@@ -3,7 +3,7 @@ stages:
   - build
 
 version:
-  image: ruby:latest
+  image: registry.durp.info/ruby:latest
   stage: versioning
   script:
     - ./scripts/version-number.sh
@@ -12,7 +12,7 @@ version:
       dotenv: version.env
 
 build-container:
-  image: docker:20.10.16
+  image: registry.durp.info/docker:20.10.16
   variables:
     DOCKER_TLS_CERTDIR: "/certs"
   services:
@@ -28,7 +28,7 @@ build-container:
     - main
 
 HelmChart:
-  image: dtzar/helm-kubectl
+  image: registry.durp.info/dtzar/helm-kubectl
   stage: build
   script:
     - ./scripts/helm-addrepo.sh
