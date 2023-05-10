@@ -12,7 +12,7 @@ workflow:
     - if: '$CI_COMMIT_BRANCH && $CI_SCRIPTS_SKIP_PIPELINE != "true"'
 render-job-templates-yml:
   stage: render
-  image: debian:bullseye-slim
+  image: registry.durp.info/debian:bullseye-slim
   script:
     # Begin of install-curl.sh
     - |
