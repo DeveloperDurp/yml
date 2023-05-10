@@ -11,7 +11,7 @@ workflow:
 
 render-job-templates-yml:
   stage: render
-  image:  debian:bullseye-slim
+  image:  registry.durp.info/debian:bullseye-slim
   script:
     - ./scripts/install-curl.sh
     - ./scripts/install-git.sh
