@@ -3,7 +3,7 @@ stages:
   - build
 
 version:
-  image: registry.durp.info/ruby:latest
+  image: gittools/gitversion:5.12.0
   stage: versioning
   script:
     - ./scripts/version-number.sh
