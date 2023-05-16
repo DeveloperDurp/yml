@@ -5,6 +5,8 @@ stages:
 version:
   image: gittools/gitversion:5.12.0
   stage: versioning
+  variables:
+    GIT_DEPTH: "0"
   script:
     - ./scripts/version-number.sh
   artifacts:
