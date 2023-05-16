@@ -4,6 +4,8 @@ stages:
 version:
   image: gittools/gitversion:5.12.0
   stage: versioning
+  variables:
+    GIT_DEPTH: "0"
   script:
     # Begin of version-number.sh
     - |
