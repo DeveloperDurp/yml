@@ -15,7 +15,7 @@ branches:
   release:
     regex: release?[/]
     mode: ContinuousDeployment
-    increment: Patch
+    increment: Minor
     tag: ''
     is-release-branch: true
     prevent-increment-of-merged-branch-version: true

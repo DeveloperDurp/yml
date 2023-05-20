@@ -4,7 +4,7 @@ stages:
 
 version:
   image: gittools/gitversion:5.12.0
-  stage: versioning
+  stage: 
   variables:
     GIT_DEPTH: "0"
   script:
@@ -31,7 +31,9 @@ build-container:
       artifacts: true
   only:
     - main
-
+tags:
+  - docker
+  
 HelmChart:
   image: registry.durp.info/dtzar/helm-kubectl
   stage: build
