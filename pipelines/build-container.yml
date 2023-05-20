@@ -49,7 +49,7 @@ build-container:
   variables:
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ""
-    DOCKER_HOST: tcp://docker:2375
+    DOCKER_HOST: tcp://localhost:2375/
   services:
     - docker:19.03.12-dind
   stage: build
@@ -72,8 +72,8 @@ build-container:
       artifacts: true
   only:
     - main
-  tags:
-    - docker
+  #tags:
+  #  - docker
 HelmChart:
   image: registry.durp.info/dtzar/helm-kubectl
   stage: build
