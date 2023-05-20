@@ -49,11 +49,11 @@ build-container:
   variables:
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ""
-    DOCKER_HOST: tcp://thedockerhost:2375/
+    DOCKER_HOST: tcp://127.0.0.1:2375/
   services:
     #- docker:20.10.17-dind
     - name: docker:dind
-      alias: thedockerhost
+      entrypoint: ["dockerd-entrypoint.sh", "--tls=false"]
   stage: build
   script:
     # Begin of docker-login.sh
