@@ -17,9 +17,12 @@ build-container:
   variables:
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ""
-    DOCKER_HOST: tcp://localhost:2375/
+    DOCKER_HOST: tcp://thedockerhost:2375/
   services:
-    - docker:20.10.17-dind
+    #- docker:20.10.17-dind
+   - name: docker:dind
+     alias: thedockerhost
+
   stage: build
   script:
     - ./scripts/docker-login.sh
