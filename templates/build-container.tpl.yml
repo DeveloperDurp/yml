@@ -1,10 +1,9 @@
 stages:
-  - versioning
   - build
 
 version:
   image: gittools/gitversion:5.12.0
-  stage: 
+  stage: .pre
   variables:
     GIT_DEPTH: "0"
   script:
@@ -14,14 +13,13 @@ version:
       dotenv: version.env
 
 build-container:
-  image: registry.durp.info/docker:20.10.16
+  image: registry.durp.info/docker:19.03.12
   variables:
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ""
     DOCKER_HOST: tcp://docker:2375
-    #DOCKER_TLS_CERTDIR: "/certs"
   services:
-    - docker:20.10.16-dind
+    - docker:19.03.12-dind
   stage: build
   script:
     - ./scripts/docker-login.sh
