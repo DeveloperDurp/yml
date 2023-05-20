@@ -74,8 +74,8 @@ build-container:
       artifacts: true
   only:
     - main
-tags:
-  - docker
+  tags:
+    - docker
 HelmChart:
   image: registry.durp.info/dtzar/helm-kubectl
   stage: build
