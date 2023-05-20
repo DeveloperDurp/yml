@@ -19,7 +19,6 @@ build-container:
     DOCKER_TLS_CERTDIR: ""
     DOCKER_HOST: tcp://127.0.0.1:2375/
   services:
-    #- docker:20.10.17-dind
     - name: docker:dind
       entrypoint: ["dockerd-entrypoint.sh", "--tls=false"]
   stage: build
@@ -31,8 +30,6 @@ build-container:
       artifacts: true
   only:
     - main
-  #tags:
-  #  - docker
   
 HelmChart:
   image: registry.durp.info/dtzar/helm-kubectl
