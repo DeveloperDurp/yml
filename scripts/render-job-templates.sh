@@ -33,11 +33,11 @@ cat job-templates.tpl.yml >> job-templates.yml
 for template in templates/*.tpl.yml
   do 
     export pipeline=$(basename $template | sed "s/.tpl//")
-    cat $template > pipelines/$pipeline 
+    cat $template > jobs/$pipeline 
     ./yq -i '(.[] | select(keys | .[] | select(tag == "!!str") | test("^(before_|after_|)script$")) | ."*script") ref $scripts
     | ($scripts | .. | select(. == "./scripts/*.sh")) |= (load(. + ".yml") | .[] style="")
     | ($scripts | .[] | select(type == "!reference")) |= ([.] | . style="flow")
     | ($scripts | select(type == "!!seq")) |= flatten(1)
     | explode .
-    ' pipelines/$pipeline
+    ' jobs/$pipeline
 done
