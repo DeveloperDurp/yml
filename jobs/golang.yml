@@ -8,3 +8,11 @@
     expire_in: 1 hour
     paths:
       - $CI_PROJECT_DIR/output
+.golang-lint:
+  image: registry.durp.info/golangci/golangci-lint:latest
+  script:
+    # Begin of golang-lint.sh
+    - |
+      #Build golang api
+      golangci-lint run ./...
+    # End of golang-lint.sh

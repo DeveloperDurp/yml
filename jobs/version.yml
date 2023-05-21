@@ -1,5 +1,5 @@
 .version:
-  image: gittools/gitversion:5.12.0
+  image: registry.durp.info/gittools/gitversion:5.12.0
   variables:
     GIT_DEPTH: "0"
   script:
