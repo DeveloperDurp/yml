@@ -16,14 +16,18 @@ include:
 version:
   extends: .version
   stage: .pre
-  only:
-    - main
+  rules:
+    - if: $CI_COMMIT_REF_NAME == 'main'
 
 sonarqube:
   extends: .sonarcloud-check
   stage: .pre
   rules:
     - if: $CI_COMMIT_REF_NAME == 'main' || $CI_PIPELINE_SOURCE == 'merge_request_event'
+
+golang-lint:
+  extends: .golang-lint
+  stage: .pre
 
 gobuild:
   extends: .golang-build-api
