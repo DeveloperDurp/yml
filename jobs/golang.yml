@@ -1,0 +1,10 @@
+.golang-build-api:
+  image: registry.durp.info/golang:1.20
+  script:
+    # Begin of golang-build-api.sh
+    - "#Build golang api\nexport GOPATH=/go\nexport PATH=$PATH:$GOPATH/bin\nmkdir output\ngo install \ngo install github.com/swaggo/swag/cmd/swag@v1.8.12 \nswag init\ngo build -o ./output/main .\n"
+    # End of golang-build-api.sh
+  artifacts:
+    expire_in: 1 hour
+    paths:
+      - $CI_PROJECT_DIR/output

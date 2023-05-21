@@ -1,6 +1,5 @@
 .helm-createchart:
   image: registry.durp.info/dtzar/helm-kubectl
-  stage: build
   script:
     # Begin of helm-addrepo.sh
     - |
