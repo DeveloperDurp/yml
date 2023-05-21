@@ -1,0 +1,10 @@
+.helm-createchart:
+  image: registry.durp.info/dtzar/helm-kubectl
+  stage: build
+  script:
+    - ./scripts/helm-addrepo.sh
+    - ./scripts/helm-package.sh
+    - ./scripts/helm-push.sh
+  needs:
+    - job: version
+      artifacts: true

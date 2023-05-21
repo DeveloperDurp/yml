@@ -1,0 +1,38 @@
+stages:
+  - build
+  - package
+  - publish 
+
+include:
+  - project: 'developerdurp/yml'
+    ref: main
+    file: 
+      - 'jobs/version.yml'
+      - 'jobs/sonarqube.yml'
+      - 'jobs/docker.yml'
+      - 'jobs/helm.yml'
+
+version:
+  extends: .version
+  stage: .pre
+  only:
+    - main
+    - /^release*/
+
+sonarqube:
+  extends: .sonarcloud-check
+  stage: .pre
+
+docker:
+  extends: .docker-build-container
+  stage: publish
+  only:
+    - main
+    - /^release*/
+
+helm:
+  extends: .helm-createchart
+  stage: publish
+  only:
+    - main
+    - /^release*/    
