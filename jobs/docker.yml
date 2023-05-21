@@ -1,0 +1,27 @@
+.docker-build-container:
+  image: registry.durp.info/docker:20.10.17
+  variables:
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_HOST: tcp://127.0.0.1:2375/
+  services:
+    - name: docker:dind
+      entrypoint: ["dockerd-entrypoint.sh", "--tls=false"]
+  stage: build
+  script:
+    # Begin of docker-login.sh
+    - |
+      #login to docker
+      docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY/$CI_PROJECT_PATH
+    # End of docker-login.sh
+
+    # Begin of docker-build.sh
+    - |
+      #Build Docker Container
+      docker build -t $CI_REGISTRY/$CI_PROJECT_PATH:$VERSION -t $CI_REGISTRY/$CI_PROJECT_PATH:latest .
+      docker push "$CI_REGISTRY/$CI_PROJECT_PATH:latest"
+      docker push "$CI_REGISTRY/$CI_PROJECT_PATH:$VERSION"
+    # End of docker-build.sh
+  needs:
+    - job: version
+      artifacts: true

@@ -1,0 +1,44 @@
+.version:
+  image: gittools/gitversion:5.12.0
+  stage: .pre
+  variables:
+    GIT_DEPTH: "0"
+  script:
+    # Begin of version-number.sh
+    - |
+      #Check for configuration
+      echo "mode: ContinuousDeployment
+      continuous-delivery-fallback-tag: ''
+      branches:
+        master:
+          mode: ContinuousDeployment
+          tag: 'dev'
+          increment: Minor
+          track-merge-target: true
+          tracks-release-branches: true
+          is-release-branch: false
+          prevent-increment-of-merged-branch-version: false
+        release:
+          regex: release?[/]
+          mode: ContinuousDeployment
+          increment: Minor
+          tag: ''
+          is-release-branch: true
+          prevent-increment-of-merged-branch-version: true
+        feature:
+          regex: feature?[/]
+          mode: ContinuousDeployment
+          increment: Inherit
+          tag: 'alpha'
+          is-release-branch: false
+          prevent-increment-of-merged-branch-version: true
+      ignore:
+        sha: []
+      " > GitVersion.yml
+      version=$(/tools/dotnet-gitversion /showvariable NuGetVersionV2)
+      echo "VERSION=$version" >> version.env
+      cat version.env
+    # End of version-number.sh
+  artifacts:
+    reports:
+      dotenv: version.env
