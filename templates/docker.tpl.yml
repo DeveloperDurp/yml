@@ -10,6 +10,4 @@
   script:
     - ./scripts/docker-login.sh
     - ./scripts/docker-build.sh
-  needs:
-    - job: version
-      artifacts: true
+

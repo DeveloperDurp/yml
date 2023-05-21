@@ -34,12 +34,19 @@ docker:
   stage: publish
   needs:
     - job: gobuild
-      artifacts: true  
-  only:
-    - main
+      artifacts: true
+    - job: version
+      artifacts: true        
+  rules:
+    - if: $CI_COMMIT_REF_NAME == 'main'
 
 helm:
   extends: .helm-createchart
   stage: publish
-  only:
-    - main 
+  needs:
+    - job: gobuild
+      artifacts: false
+    - job: version
+      artifacts: true      
+  rules:
+    - if: $CI_COMMIT_REF_NAME == 'main'
