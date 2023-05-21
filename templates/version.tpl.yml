@@ -1,6 +1,5 @@
 .version:
   image: gittools/gitversion:5.12.0
-  stage: .pre
   variables:
     GIT_DEPTH: "0"
   script:

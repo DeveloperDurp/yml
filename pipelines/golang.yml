@@ -17,22 +17,28 @@ version:
   stage: .pre
   only:
     - main
-    - /^release*/
 
 sonarqube:
   extends: .sonarcloud-check
   stage: .pre
+  rules:
+    - if: $CI_COMMIT_REF_NAME == 'main' || $CI_PIPELINE_SOURCE == 'merge_request_event'
+
+gobuild:
+  extends: .version
+  stage: build
 
 docker:
   extends: .docker-build-container
   stage: publish
+  needs:
+    - job: gobuild
+      artifacts: true  
   only:
     - main
-    - /^release*/
 
 helm:
   extends: .helm-createchart
   stage: publish
   only:
-    - main
-    - /^release*/    
+    - main 

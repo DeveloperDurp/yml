@@ -7,7 +7,6 @@
   services:
     - name: docker:dind
       entrypoint: ["dockerd-entrypoint.sh", "--tls=false"]
-  stage: build
   script:
     - ./scripts/docker-login.sh
     - ./scripts/docker-build.sh
