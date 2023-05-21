@@ -9,6 +9,7 @@ include:
     file: 
       - 'jobs/version.yml'
       - 'jobs/sonarqube.yml'
+      - 'jobs/golang.yml'
       - 'jobs/docker.yml'
       - 'jobs/helm.yml'
 
