@@ -21,6 +21,3 @@
       docker push "$CI_REGISTRY/$CI_PROJECT_PATH:latest"
       docker push "$CI_REGISTRY/$CI_PROJECT_PATH:$VERSION"
     # End of docker-build.sh
-  needs:
-    - job: version
-      artifacts: true

@@ -20,6 +20,3 @@
     # Begin of helm-push.sh
     - "#Helm Push    \n    \nhelm plugin install https://github.com/chartmuseum/helm-push\nfor chart in packages/*; do\n    helm cm-push ./$chart ${CI_PROJECT_NAME}\ndone\n"
     # End of helm-push.sh
-  needs:
-    - job: version
-      artifacts: true
