@@ -4,6 +4,7 @@
 
 for chart in charts/*; do
   if [ -d "$chart" ]; then
+    helm dependency update $chart
     helm package "$chart" -d ./packages --version ${VERSION}
   fi
 done
