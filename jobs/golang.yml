@@ -17,6 +17,6 @@
   script:
     # Begin of golang-lint.sh
     - |
-      #Build golang api
-      golangci-lint run ./...
+      #run linter
+      golangci-lint run ./... --timeout 5m0s
     # End of golang-lint.sh
