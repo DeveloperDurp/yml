@@ -1,4 +1,6 @@
 .golang-build-api:
+  variables:
+    GOPROXY: https://nexus.durp.info/repository/go/
   image: registry.durp.info/golang:1.20
   script:
     # Begin of golang-build-api.sh
@@ -9,6 +11,7 @@
     paths:
       - $CI_PROJECT_DIR/output
 .golang-lint:
+  GOPROXY: https://nexus.durp.info/repository/go/
   image: registry.durp.info/golangci/golangci-lint:latest
   script:
     # Begin of golang-lint.sh
