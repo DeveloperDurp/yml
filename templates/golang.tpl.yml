@@ -10,7 +10,8 @@
       - $CI_PROJECT_DIR/output
 
 .golang-lint:
-  GOPROXY: https://nexus.durp.info/repository/go/
+  variables:
+    GOPROXY: https://nexus.durp.info/repository/go/
   image: registry.durp.info/golangci/golangci-lint:latest
   script:
     - ./scripts/golang-lint.sh
