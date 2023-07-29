@@ -3,7 +3,15 @@
     name: registry.durp.info/hashicorp/terraform:light
     #name: hashicorp/terraform:light
     entrypoint: [""]
+  variables:
+    WORKDIR: $CI_PROJECT_DIR/terraform
   script:
+    # Begin of cd-workdir.sh
+    - |
+      #change directory
+      cd $WORKDIR
+    # End of cd-workdir.sh
+
     # Begin of terraform-fmt.sh
     - |
       #Terraform fmt
@@ -15,8 +23,15 @@
     #name: hashicorp/terraform:light
     entrypoint: [""]
   variables:
+    WORKDIR: $CI_PROJECT_DIR/terraform
     GITLAB_TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/${CI_PROJECT_NAME}
   script:
+    # Begin of cd-workdir.sh
+    - |
+      #change directory
+      cd $WORKDIR
+    # End of cd-workdir.sh
+
     # Begin of terraform-init.sh
     - "#Terraform init    \nterraform init -reconfigure -backend-config=\"address=${GITLAB_TF_ADDRESS}\" -backend-config=\"lock_address=${GITLAB_TF_ADDRESS}/lock\" -backend-config=\"unlock_address=${GITLAB_TF_ADDRESS}/lock\" -backend-config=\"username=gitlab-ci-token\" -backend-config=\"password=${CI_JOB_TOKEN}\" -backend-config=\"lock_method=POST\" -backend-config=\"unlock_method=DELETE\" -backend-config=\"retry_wait_min=5\"  \n"
     # End of terraform-init.sh
@@ -30,10 +45,17 @@
     #name: hashicorp/terraform:light
     entrypoint: [""]
   variables:
+    WORKDIR: $CI_PROJECT_DIR/terraform
     PLAN: plan.tfplan
     JSON_PLAN_FILE: tfplan.json
     GITLAB_TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/${CI_PROJECT_NAME}
   script:
+    # Begin of cd-workdir.sh
+    - |
+      #change directory
+      cd $WORKDIR
+    # End of cd-workdir.sh
+
     # Begin of terraform-init.sh
     - "#Terraform init    \nterraform init -reconfigure -backend-config=\"address=${GITLAB_TF_ADDRESS}\" -backend-config=\"lock_address=${GITLAB_TF_ADDRESS}/lock\" -backend-config=\"unlock_address=${GITLAB_TF_ADDRESS}/lock\" -backend-config=\"username=gitlab-ci-token\" -backend-config=\"password=${CI_JOB_TOKEN}\" -backend-config=\"lock_method=POST\" -backend-config=\"unlock_method=DELETE\" -backend-config=\"retry_wait_min=5\"  \n"
     # End of terraform-init.sh
@@ -50,8 +72,15 @@
     #name: hashicorp/terraform:light
     entrypoint: [""]
   variables:
+    WORKDIR: $CI_PROJECT_DIR/terraform
     GITLAB_TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/${CI_PROJECT_NAME}
   script:
+    # Begin of cd-workdir.sh
+    - |
+      #change directory
+      cd $WORKDIR
+    # End of cd-workdir.sh
+
     # Begin of terraform-init.sh
     - "#Terraform init    \nterraform init -reconfigure -backend-config=\"address=${GITLAB_TF_ADDRESS}\" -backend-config=\"lock_address=${GITLAB_TF_ADDRESS}/lock\" -backend-config=\"unlock_address=${GITLAB_TF_ADDRESS}/lock\" -backend-config=\"username=gitlab-ci-token\" -backend-config=\"password=${CI_JOB_TOKEN}\" -backend-config=\"lock_method=POST\" -backend-config=\"unlock_method=DELETE\" -backend-config=\"retry_wait_min=5\"  \n"
     # End of terraform-init.sh
@@ -67,9 +96,15 @@
     #name: hashicorp/terraform:light
     entrypoint: [""]
   variables:
+    WORKDIR: $CI_PROJECT_DIR/terraform
     GITLAB_TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/${CI_PROJECT_NAME}
-    WORKDIR: $CI_PROJECT_DIR
   script:
+    # Begin of cd-workdir.sh
+    - |
+      #change directory
+      cd $WORKDIR
+    # End of cd-workdir.sh
+
     # Begin of terraform-init.sh
     - "#Terraform init    \nterraform init -reconfigure -backend-config=\"address=${GITLAB_TF_ADDRESS}\" -backend-config=\"lock_address=${GITLAB_TF_ADDRESS}/lock\" -backend-config=\"unlock_address=${GITLAB_TF_ADDRESS}/lock\" -backend-config=\"username=gitlab-ci-token\" -backend-config=\"password=${CI_JOB_TOKEN}\" -backend-config=\"lock_method=POST\" -backend-config=\"unlock_method=DELETE\" -backend-config=\"retry_wait_min=5\"  \n"
     # End of terraform-init.sh
