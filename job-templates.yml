@@ -75,7 +75,7 @@ render-pipelines-to-branch:
     # End of install-yq.sh
 
     # Begin of render-pipelines-branch.sh
-    - "#Replace main branch with current branch\nfor file in pipelines/*.yml\n  do \n    sed -i \"s;ref: 'main';ref: '$CI_COMMIT_BRANCH';g\" ./$file\ndone\n"
+    - "#Replace main branch with current branch\nfor file in pipelines/*.yml\n  do \n    sed -i \"s;ref: main;ref: '$CI_COMMIT_BRANCH';g\" ./$file\ndone\n"
     # End of render-pipelines-branch.sh
 
     # Begin of commit-and-push-changes.sh
