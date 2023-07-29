@@ -26,3 +26,15 @@ render-job-templates-yml:
         - templates/**        
         - job-templates.yml
         - job-templates.tpl.yml
+
+render-pipelines-to-branch:
+  stage: render
+  image: "${CI_REGISTRY}/containerized-applications/ci-images/ci-scripts:1.0.2"
+  script:
+    - ./scripts/install-curl.sh
+    - ./scripts/install-git.sh
+    - ./scripts/install-yq.sh  
+    - ./scripts/render-pipelines-branch.sh
+    - ./scripts/commit-and-push-changes.sh
+  rules:
+    - if: $CI_COMMIT_BRANCH =~ /^release*/
