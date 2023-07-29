@@ -1,0 +1,69 @@
+stages:
+  - plan
+  - apply
+  - destroy
+
+include:
+  - project: 'developerdurp/yml'
+    ref: main
+    file: 
+      - 'jobs/terraform.yml'
+
+workflow:
+  rules:
+    - if: $CI_COMMIT_BRANCH
+      changes:
+        - terraform/**
+
+format:
+  stage: .pre
+  allow_failure: false
+  extends: .terraform_fmt
+  rules: 
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"         
+      when: always
+    - when: never
+
+validate:
+  stage: .pre
+  allow_failure: false
+  extends: .terraform_validate
+  rules: 
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"         
+      when: always
+    - when: never    
+    
+plan:
+  stage: plan
+  variables:
+    ARGUMENTS: -var-file=terraform.tfvars
+  allow_failure: false
+  extends: .terraform_plan
+  needs: ["validate","format"]
+  rules: 
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"    
+      when: always
+    - when: never
+
+apply:
+  stage: apply
+  variables:
+    ARGUMENTS: -var-file=terraform.tfvars
+  allow_failure: false
+  extends: .terraform_apply   
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+      when: never      
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: always
+    - when: never          
+
+destroy:
+  stage: destroy
+  variables:
+    ARGUMENTS: -var-file=terraform.tfvars
+  allow_failure: false
+  extends: .terraform_destroy  
+  needs: ["apply"]
+  rules:       
+    - when: manual   
