@@ -22,7 +22,6 @@ format:
   rules: 
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"         
       when: always
-    - when: never
 
 validate:
   stage: .pre
@@ -30,8 +29,7 @@ validate:
   extends: .terraform_validate
   rules: 
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"         
-      when: always
-    - when: never    
+      when: always  
     
 plan:
   stage: plan
@@ -43,7 +41,6 @@ plan:
   rules: 
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"    
       when: always
-    - when: never
 
 apply:
   stage: apply
@@ -52,11 +49,7 @@ apply:
   allow_failure: false
   extends: .terraform_apply   
   rules:
-    - if: $CI_PIPELINE_SOURCE == "schedule"
-      when: never      
-    - if: '$CI_COMMIT_BRANCH == "main"'
-      when: always
-    - when: never          
+    - when: manual          
 
 destroy:
   stage: destroy
