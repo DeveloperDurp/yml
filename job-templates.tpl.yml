@@ -29,7 +29,6 @@ render-job-templates-yml:
 
 render-pipelines-to-branch:
   stage: render
-  image: "${CI_REGISTRY}/containerized-applications/ci-images/ci-scripts:1.0.2"
   script:
     - ./scripts/install-curl.sh
     - ./scripts/install-git.sh
