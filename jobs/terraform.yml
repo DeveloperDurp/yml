@@ -1,0 +1,81 @@
+.terraform_fmt:
+  image:
+    name: registry.durp.info/hashicorp/terraform:light
+    #name: hashicorp/terraform:light
+    entrypoint: [""]
+  script:
+    # Begin of terraform-fmt.sh
+    - |
+      #Terraform fmt
+      terraform fmt -diff -check -write=false
+    # End of terraform-fmt.sh
+.terraform_validate:
+  image:
+    name: registry.durp.info/hashicorp/terraform:light
+    #name: hashicorp/terraform:light
+    entrypoint: [""]
+  variables:
+    GITLAB_TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/${CI_PROJECT_NAME}
+  script:
+    # Begin of terraform-init.sh
+    - "#Terraform init    \nterraform init -reconfigure -backend-config=\"address=${GITLAB_TF_ADDRESS}\" -backend-config=\"lock_address=${GITLAB_TF_ADDRESS}/lock\" -backend-config=\"unlock_address=${GITLAB_TF_ADDRESS}/lock\" -backend-config=\"username=gitlab-ci-token\" -backend-config=\"password=${CI_JOB_TOKEN}\" -backend-config=\"lock_method=POST\" -backend-config=\"unlock_method=DELETE\" -backend-config=\"retry_wait_min=5\"  \n"
+    # End of terraform-init.sh
+
+    # Begin of terraform-validate.sh
+    - "#Terraform validate\nterraform validate    \n"
+    # End of terraform-validate.sh
+.terraform_plan:
+  image:
+    name: registry.durp.info/hashicorp/terraform:light
+    #name: hashicorp/terraform:light
+    entrypoint: [""]
+  variables:
+    PLAN: plan.tfplan
+    JSON_PLAN_FILE: tfplan.json
+    GITLAB_TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/${CI_PROJECT_NAME}
+  script:
+    # Begin of terraform-init.sh
+    - "#Terraform init    \nterraform init -reconfigure -backend-config=\"address=${GITLAB_TF_ADDRESS}\" -backend-config=\"lock_address=${GITLAB_TF_ADDRESS}/lock\" -backend-config=\"unlock_address=${GITLAB_TF_ADDRESS}/lock\" -backend-config=\"username=gitlab-ci-token\" -backend-config=\"password=${CI_JOB_TOKEN}\" -backend-config=\"lock_method=POST\" -backend-config=\"unlock_method=DELETE\" -backend-config=\"retry_wait_min=5\"  \n"
+    # End of terraform-init.sh
+
+    # Begin of terraform-plan.sh
+    - "#Terraform plan    \napk add --update curl jq\nalias convert_report=\"jq -r '([.resource_changes[].change.actions?]|flatten)|{\\\"create\\\":(map(select(.==\\\"create\\\"))|length),\\\"update\\\":(map(select(.==\\\"update\\\"))|length),\\\"delete\\\":(map(select(.==\\\"delete\\\"))|length)}'\"\nterraform plan -out=$PLAN $ARGUMENTS\nterraform show --json $PLAN | convert_report > $JSON_PLAN_FILE\n"
+    # End of terraform-plan.sh
+  artifacts:
+    reports:
+      terraform: $WORKDIR/$JSON_PLAN_FILE
+.terraform_apply:
+  image:
+    name: registry.durp.info/hashicorp/terraform:light
+    #name: hashicorp/terraform:light
+    entrypoint: [""]
+  variables:
+    GITLAB_TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/${CI_PROJECT_NAME}
+  script:
+    # Begin of terraform-init.sh
+    - "#Terraform init    \nterraform init -reconfigure -backend-config=\"address=${GITLAB_TF_ADDRESS}\" -backend-config=\"lock_address=${GITLAB_TF_ADDRESS}/lock\" -backend-config=\"unlock_address=${GITLAB_TF_ADDRESS}/lock\" -backend-config=\"username=gitlab-ci-token\" -backend-config=\"password=${CI_JOB_TOKEN}\" -backend-config=\"lock_method=POST\" -backend-config=\"unlock_method=DELETE\" -backend-config=\"retry_wait_min=5\"  \n"
+    # End of terraform-init.sh
+
+    # Begin of terraform-apply.sh
+    - |
+      #Terraform validate
+      terraform apply -auto-approve $ARGUMENTS
+    # End of terraform-apply.sh
+.terraform_destroy:
+  image:
+    name: registry.durp.info/hashicorp/terraform:light
+    #name: hashicorp/terraform:light
+    entrypoint: [""]
+  variables:
+    GITLAB_TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/${CI_PROJECT_NAME}
+    WORKDIR: $CI_PROJECT_DIR
+  script:
+    # Begin of terraform-init.sh
+    - "#Terraform init    \nterraform init -reconfigure -backend-config=\"address=${GITLAB_TF_ADDRESS}\" -backend-config=\"lock_address=${GITLAB_TF_ADDRESS}/lock\" -backend-config=\"unlock_address=${GITLAB_TF_ADDRESS}/lock\" -backend-config=\"username=gitlab-ci-token\" -backend-config=\"password=${CI_JOB_TOKEN}\" -backend-config=\"lock_method=POST\" -backend-config=\"unlock_method=DELETE\" -backend-config=\"retry_wait_min=5\"  \n"
+    # End of terraform-init.sh
+
+    # Begin of terraform-destroy.sh
+    - |
+      #Terraform validate
+      terraform destroy -auto-approve $ARGUMENTS
+    # End of terraform-destroy.sh
