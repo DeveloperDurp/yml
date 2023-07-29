@@ -9,27 +9,15 @@ include:
     file: 
       - 'jobs/terraform.yml'
 
-workflow:
-  rules:
-    - if: $CI_COMMIT_BRANCH
-      changes:
-        - terraform/**
-
 format:
   stage: .pre
   allow_failure: false
   extends: .terraform_fmt
-  rules: 
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"         
-      when: always
 
 validate:
   stage: .pre
   allow_failure: false
   extends: .terraform_validate
-  rules: 
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"         
-      when: always  
     
 plan:
   stage: plan
@@ -38,9 +26,6 @@ plan:
   allow_failure: false
   extends: .terraform_plan
   needs: ["validate","format"]
-  rules: 
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"    
-      when: always
 
 apply:
   stage: apply
