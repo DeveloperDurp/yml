@@ -19,29 +19,62 @@ validate:
   allow_failure: false
   extends: .terraform_validate
     
-plan:
+plan-development:
   stage: plan
   variables:
     ARGUMENTS: -var-file=terraform.tfvars
+    ENVIRONMENT_NAME: development
   allow_failure: false
   extends: .terraform_plan
   needs: ["validate","format"]
 
-apply:
+plan-production:
+  stage: plan
+  variables:
+    ARGUMENTS: -var-file=terraform.tfvars
+    ENVIRONMENT_NAME: production
+  allow_failure: false
+  extends: .terraform_plan
+  needs: ["validate","format"]  
+
+apply-development:
   stage: apply
   variables:
     ARGUMENTS: -var-file=terraform.tfvars
+    ENVIRONMENT_NAME: development
   allow_failure: false
   extends: .terraform_apply   
   rules:
-    - when: manual          
+    - when: manual
 
-destroy:
+apply-production:
+  stage: apply
+  variables:
+    ARGUMENTS: -var-file=terraform.tfvars
+    ENVIRONMENT_NAME: production
+  allow_failure: false
+  extends: .terraform_apply   
+  rules:
+    - when: manual        
+
+destroy-development:
   stage: destroy
   variables:
     ARGUMENTS: -var-file=terraform.tfvars
+    ENVIRONMENT_NAME: development
   allow_failure: false
   extends: .terraform_destroy  
   needs: ["apply"]
   rules:       
-    - when: manual   
+    - when: manual
+
+destroy-production:
+  stage: destroy
+  variables:
+    ARGUMENTS: -var-file=terraform.tfvars
+    ENVIRONMENT_NAME: production
+  allow_failure: false
+  extends: .terraform_destroy  
+  needs: ["apply"]
+  rules:       
+    - when: manual       
