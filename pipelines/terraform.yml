@@ -64,7 +64,7 @@ destroy-development:
     ENVIRONMENT_NAME: development
   allow_failure: false
   extends: .terraform_destroy  
-  needs: ["apply"]
+  needs: ["apply-development"]
   rules:       
     - when: manual
 
@@ -75,6 +75,6 @@ destroy-production:
     ENVIRONMENT_NAME: production
   allow_failure: false
   extends: .terraform_destroy  
-  needs: ["apply"]
+  needs: ["apply-production"]
   rules:       
     - when: manual       
