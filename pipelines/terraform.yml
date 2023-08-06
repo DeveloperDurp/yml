@@ -21,6 +21,8 @@ validate:
     
 plan-development:
   stage: plan
+  environment:
+    name: development
   variables:
     ARGUMENTS: -var-file=terraform.tfvars
     ENVIRONMENT_NAME: development
@@ -30,6 +32,8 @@ plan-development:
 
 plan-production:
   stage: plan
+  environment:
+    name: production
   variables:
     ARGUMENTS: -var-file=terraform.tfvars
     ENVIRONMENT_NAME: production
@@ -39,6 +43,8 @@ plan-production:
 
 apply-development:
   stage: apply
+  environment:
+    name: development
   variables:
     ARGUMENTS: -var-file=terraform.tfvars
     ENVIRONMENT_NAME: development
@@ -49,6 +55,8 @@ apply-development:
 
 apply-production:
   stage: apply
+  environment:
+    name: production
   variables:
     ARGUMENTS: -var-file=terraform.tfvars
     ENVIRONMENT_NAME: production
@@ -59,6 +67,8 @@ apply-production:
 
 destroy-development:
   stage: destroy
+  environment:
+    name: development
   variables:
     ARGUMENTS: -var-file=terraform.tfvars
     ENVIRONMENT_NAME: development
@@ -70,6 +80,8 @@ destroy-development:
 
 destroy-production:
   stage: destroy
+  environment:
+    name: production
   variables:
     ARGUMENTS: -var-file=terraform.tfvars
     ENVIRONMENT_NAME: production
