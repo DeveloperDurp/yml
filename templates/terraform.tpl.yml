@@ -16,7 +16,7 @@
     entrypoint: [""]
   variables:
     WORKDIR: $CI_PROJECT_DIR/terraform  
-    GITLAB_TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/${CI_PROJECT_NAME}
+    GITLAB_TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/${CI_COMMIT_REF_NAME}
   script:
     - ./scripts/cd-workdir.sh
     - ./scripts/terraform-init.sh
@@ -31,7 +31,7 @@
     WORKDIR: $CI_PROJECT_DIR/terraform  
     PLAN: plan.tfplan
     JSON_PLAN_FILE: tfplan.json
-    GITLAB_TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/${CI_PROJECT_NAME}
+    GITLAB_TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/${CI_COMMIT_REF_NAME}
   script:
     - ./scripts/cd-workdir.sh
     - ./scripts/terraform-init.sh
@@ -48,7 +48,7 @@
     entrypoint: [""]
   variables:
     WORKDIR: $CI_PROJECT_DIR/terraform  
-    GITLAB_TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/${CI_PROJECT_NAME}
+    GITLAB_TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/${CI_COMMIT_REF_NAME}
   script:
     - ./scripts/cd-workdir.sh
     - ./scripts/terraform-init.sh
@@ -61,7 +61,7 @@
     entrypoint: [""]
   variables:
     WORKDIR: $CI_PROJECT_DIR/terraform  
-    GITLAB_TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/${CI_PROJECT_NAME}
+    GITLAB_TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/${CI_COMMIT_REF_NAME}
   script:
     - ./scripts/cd-workdir.sh
     - ./scripts/terraform-init.sh

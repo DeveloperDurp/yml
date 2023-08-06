@@ -10,4 +10,3 @@
   script:
     - ./scripts/docker-login.sh
     - ./scripts/docker-build.sh
-
