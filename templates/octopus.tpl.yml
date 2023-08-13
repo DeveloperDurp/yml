@@ -1,0 +1,7 @@
+.octo_package:
+  image: registry.durp.info/octopusdeploy/octo:latest
+  script: 
+    - ./scripts/octo-pack.sh
+  artifacts:
+    paths:
+    - $CI_PROJECT_DIR/packages
