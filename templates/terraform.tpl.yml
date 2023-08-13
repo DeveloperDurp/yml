@@ -1,37 +1,18 @@
 .terraform_fmt:
-  image:
-    name: registry.durp.info/hashicorp/terraform:light
-    #name: hashicorp/terraform:light
-    entrypoint: [""]
-  variables:
-    WORKDIR: $CI_PROJECT_DIR/terraform
   script:
     - ./scripts/cd-workdir.sh
     - ./scripts/terraform-fmt.sh
 
 .terraform_validate:
-  image:
-    name: registry.durp.info/hashicorp/terraform:light
-    #name: hashicorp/terraform:light
-    entrypoint: [""]
-  variables:
-    WORKDIR: $CI_PROJECT_DIR/terraform  
-    GITLAB_TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/${ENVIRONMENT_NAME}
   script:
     - ./scripts/cd-workdir.sh
     - ./scripts/terraform-init.sh
     - ./scripts/terraform-validate.sh
     
 .terraform_plan:
-  image:
-    name: registry.durp.info/hashicorp/terraform:light
-    #name: hashicorp/terraform:light
-    entrypoint: [""]
   variables:
-    WORKDIR: $CI_PROJECT_DIR/terraform  
     PLAN: plan.tfplan
     JSON_PLAN_FILE: tfplan.json
-    GITLAB_TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/${ENVIRONMENT_NAME}
   script:
     - ./scripts/cd-workdir.sh
     - ./scripts/terraform-init.sh
@@ -42,26 +23,12 @@
 
 
 .terraform_apply:
-  image:
-    name: registry.durp.info/hashicorp/terraform:light
-    #name: hashicorp/terraform:light
-    entrypoint: [""]
-  variables:
-    WORKDIR: $CI_PROJECT_DIR/terraform  
-    GITLAB_TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/${ENVIRONMENT_NAME}
   script:
     - ./scripts/cd-workdir.sh
     - ./scripts/terraform-init.sh
     - ./scripts/terraform-apply.sh
 
 .terraform_destroy:
-  image:
-    name: registry.durp.info/hashicorp/terraform:light
-    #name: hashicorp/terraform:light
-    entrypoint: [""]
-  variables:
-    WORKDIR: $CI_PROJECT_DIR/terraform  
-    GITLAB_TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/${ENVIRONMENT_NAME}
   script:
     - ./scripts/cd-workdir.sh
     - ./scripts/terraform-init.sh
