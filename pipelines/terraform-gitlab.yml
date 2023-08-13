@@ -1,0 +1,33 @@
+stages:
+  - plan
+  - apply
+  - destroy
+
+include:
+  - project: 'developerdurp/yml'
+    ref: main
+    file: 
+      - 'jobs/terraform.yml'
+
+format:
+  stage: .pre
+  allow_failure: false
+  extends: .terraform_fmt
+
+validate:
+  stage: .pre
+  allow_failure: false
+  extends: .terraform_validate
+
+plan:
+  stage: plan
+  allow_failure: false
+  extends: .terraform_plan
+  needs: ["validate","format"]  
+
+apply:
+  stage: apply
+  allow_failure: false
+  extends: .terraform_apply   
+  rules:
+    - when: manual
