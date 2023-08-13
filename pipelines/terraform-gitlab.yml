@@ -4,7 +4,7 @@ stages:
   - destroy
 
 variables:
-  WORKDIR: $CI_PROJECT_DIR/terraform
+  WORKDIR: $CI_PROJECT_DIR/.tf
   GITLAB_TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/gitlab
   TF_VAR_GITLAB_PROJECT_ID: $CI_PROJECT_ID
   TF_VAR_GITLAB_PROJECT_NAME: $CI_PROJECT_NAME
