@@ -5,7 +5,10 @@ stages:
 
 variables:
   WORKDIR: $CI_PROJECT_DIR/terraform
-  GITLAB_TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/${ENVIRONMENT_NAME}  
+  GITLAB_TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/gitlab
+  TF_VAR_GITLAB_PROJECT_ID: $CI_PROJECT_ID
+  TF_VAR_GITLAB_PROJECT_NAME: $CI_PROJECT_NAME
+  TF_VAR_GITLAB_TOKEN: $CI_JOB_TOKEN
 
 image:
   name: registry.durp.info/hashicorp/terraform:light
