@@ -30,6 +30,8 @@ golang-lint:
   stage: .pre
 
 gobuild:
+  variables:
+    GOPROXY: https://nexus.durp.info/repository/go/
   extends: .golang-build-api
   stage: build
 
