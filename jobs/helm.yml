@@ -11,7 +11,7 @@
         fi
       done
     # End of helm-package.sh
-.helm_push:
+.helm-push:
   image: dtzar/helm-kubectl
   script:
     # Begin of helm-login.sh
