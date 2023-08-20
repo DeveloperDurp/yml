@@ -10,5 +10,5 @@
 .helm-push:
   image: dtzar/helm-kubectl
   script:
-    - ./scripts/helm-login.sh
+    - ./scripts/helm-addrepo.sh
     - ./scripts/helm-push.sh
