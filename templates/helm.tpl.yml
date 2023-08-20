@@ -1,7 +1,6 @@
 .helm-build:
   image: dtzar/helm-kubectl
   script:
-    - ./scripts/variablecheck-version.sh
     - ./scripts/helm-package.sh
 
 .helm_push:
