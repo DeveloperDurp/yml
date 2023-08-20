@@ -33,7 +33,7 @@ helm-build:
     - if: $CI_COMMIT_REF_NAME == 'main'
     - if: $CI_COMMIT_BRANCH =~ '/^release/'
 
-helm:
+helm-push:
   extends: .helm-push
   stage: publish
   needs:

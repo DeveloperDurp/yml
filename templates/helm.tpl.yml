@@ -3,7 +3,7 @@
   script:
     - ./scripts/helm-package.sh
 
-.helm_push:
+.helm-push:
   image: dtzar/helm-kubectl
   script:
     - ./scripts/helm-login.sh
