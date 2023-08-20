@@ -1,12 +1,6 @@
-.helm-createchart:
-  image: registry.durp.info/dtzar/helm-kubectl
+.helm-build:
+  image: dtzar/helm-kubectl
   script:
-    # Begin of helm-addrepo.sh
-    - |
-      #Helm repo add
-      helm repo add --username gitlab-ci-token --password ${CI_JOB_TOKEN} ${CI_PROJECT_NAME} ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/helm/stable
-    # End of helm-addrepo.sh
-
     # Begin of helm-package.sh
     - |
       #Helm Package
@@ -17,7 +11,15 @@
         fi
       done
     # End of helm-package.sh
+.helm_push:
+  image: dtzar/helm-kubectl
+  script:
+    # Begin of helm-login.sh
+    - |
+      #Helm login
+      helm registry login ${CI_REGISTRY} -u gitlab-ci-token -p ${CI_JOB_TOKEN}
+    # End of helm-login.sh
 
     # Begin of helm-push.sh
-    - "#Helm Push    \n    \nhelm plugin install https://github.com/chartmuseum/helm-push\nfor chart in packages/*; do\n    helm cm-push ./$chart ${CI_PROJECT_NAME}\ndone\n"
+    - "#Helm Push    \n    \nfor chart in packages/*; do\n    helm push ./$chart oci://$CI_REGISTRY/$CI_PROJECT_PATH\ndone\n"
     # End of helm-push.sh
