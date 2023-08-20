@@ -1,6 +1,11 @@
-.helm-createchart:
-  image: registry.durp.info/dtzar/helm-kubectl
+.helm-build:
+  image: dtzar/helm-kubectl
   script:
-    - ./scripts/helm-addrepo.sh
+    - ./scripts/variablecheck-version.sh
     - ./scripts/helm-package.sh
+
+.helm_push:
+  image: dtzar/helm-kubectl
+  script:
+    - ./scripts/helm-registry-login.sh
     - ./scripts/helm-push.sh
