@@ -18,6 +18,7 @@ version:
   stage: .pre
   rules:
     - if: $CI_COMMIT_REF_NAME == 'main'
+    - if: $CI_COMMIT_BRANCH =~ '/^release/'
 
 sonarqube:
   extends: .sonarcloud-check
@@ -45,14 +46,5 @@ docker:
       artifacts: true        
   rules:
     - if: $CI_COMMIT_REF_NAME == 'main'
+    - if: $CI_COMMIT_BRANCH =~ '/^release/'
 
-helm:
-  extends: .helm-createchart
-  stage: publish
-  needs:
-    - job: gobuild
-      artifacts: false
-    - job: version
-      artifacts: true      
-  rules:
-    - if: $CI_COMMIT_REF_NAME == 'main'
