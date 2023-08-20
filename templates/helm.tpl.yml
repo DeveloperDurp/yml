@@ -2,6 +2,10 @@
   image: dtzar/helm-kubectl
   script:
     - ./scripts/helm-package.sh
+  artifacts:
+    expire_in: 1 hour
+    paths:
+      - $CI_PROJECT_DIR/packages        
 
 .helm-push:
   image: dtzar/helm-kubectl
