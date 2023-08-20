@@ -6,5 +6,5 @@
 .helm_push:
   image: dtzar/helm-kubectl
   script:
-    - ./scripts/helm-registry-login.sh
+    - ./scripts/helm-login.sh
     - ./scripts/helm-push.sh
