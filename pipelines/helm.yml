@@ -38,7 +38,7 @@ helm-push:
   stage: publish
   needs:
     - job: helm-build
-      artifacts: false
+      artifacts: true
     - job: version
       artifacts: true      
   rules:
