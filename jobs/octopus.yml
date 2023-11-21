@@ -2,7 +2,14 @@
   image: registry.durp.info/octopusdeploy/octo:latest
   script:
     # Begin of pack.sh
-    - "#Package with octopus\nmkdir $CI_PROJECT_DIR/packages\nIFS=\";\"\ncount=0\nfor i in $projectname; \n  do dotnet /octo/octo.dll pack --id=$i --version=$VERSION --outFolder=$CI_PROJECT_DIR/packages --basePath=$WORKDIR/$i;\n  count=$(($count+1));\n  done\n"
+    - |
+      #Package with octopus
+      mkdir $CI_PROJECT_DIR/packages
+      for dir in ./output/*/;
+      do dir=${dir%#/};
+          dir=${dir##*/};
+          dotnet /octo/octo.dll pack --id=$dir --version=$VERSION --outFolder=$CI_PROJECT_DIR/packages --basePath=$CI_PROJECT_DIR/output/$dir;
+      done
     # End of pack.sh
   artifacts:
     paths:
@@ -11,5 +18,12 @@
   image: registry.durp.info/octopusdeploy/octo:latest
   script:
     # Begin of pack.sh
-    - "#Package with octopus\nmkdir $CI_PROJECT_DIR/packages\nIFS=\";\"\ncount=0\nfor i in $projectname; \n  do dotnet /octo/octo.dll pack --id=$i --version=$VERSION --outFolder=$CI_PROJECT_DIR/packages --basePath=$WORKDIR/$i;\n  count=$(($count+1));\n  done\n"
+    - |
+      #Package with octopus
+      mkdir $CI_PROJECT_DIR/packages
+      for dir in ./output/*/;
+      do dir=${dir%#/};
+          dir=${dir##*/};
+          dotnet /octo/octo.dll pack --id=$dir --version=$VERSION --outFolder=$CI_PROJECT_DIR/packages --basePath=$CI_PROJECT_DIR/output/$dir;
+      done
     # End of pack.sh
