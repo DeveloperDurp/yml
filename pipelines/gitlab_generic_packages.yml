@@ -9,7 +9,7 @@ include:
     ref: 'main'
     file: 
       - 'jobs/octopus.yml'
-      - 'jobs/versioning.yml'
+      - 'jobs/version.yml'
       - 'jobs/nuget.yml'
       - 'jobs/gitlab.yml'
 
