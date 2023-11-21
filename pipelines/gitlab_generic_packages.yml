@@ -8,7 +8,7 @@ include:
   - project: 'developerdurp/yml'
     ref: 'main'
     file: 
-      - 'jobs/octo-templates.yml'
+      - 'jobs/octopus.yml'
       - 'jobs/versioning.yml'
       - 'jobs/nuget.yml'
       - 'jobs/gitlab.yml'
