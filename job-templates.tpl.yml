@@ -18,14 +18,6 @@ render-job-templates-yml:
     - ./scripts/install-yq.sh
     - ./scripts/render-job-templates.sh
     - ./scripts/commit-and-push-changes.sh
-  rules:
-    - if: $CI_COMMIT_BRANCH
-      changes:
-        - .gitlab-ci.yml
-        - *.sh
-        - *.tpl.yml
-        - job-templates.yml
-        - job-templates.tpl.yml
 
 render-pipelines-to-branch:
   stage: render
@@ -35,5 +27,3 @@ render-pipelines-to-branch:
     - ./scripts/install-yq.sh  
     - ./scripts/render-pipelines-branch.sh
     - ./scripts/commit-and-push-changes.sh
-  rules:
-    - if: $CI_COMMIT_BRANCH =~ /^release*/
