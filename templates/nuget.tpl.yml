@@ -1,0 +1,4 @@
+.nuget_push:
+  image: registry.durp.info/dotnet/core/sdk:latest
+  script:
+    - ./scripts/nuget/push.sh

@@ -1,0 +1,73 @@
+stages:
+  - build
+  - package
+  - publish
+
+include:
+  - template: Security/Secret-Detection.gitlab-ci.yml
+  - project: 'developerdurp/yml'
+    ref: 'main'
+    file: 
+      - 'jobs/ocotopus.yml'
+      - 'jobs/versioning.yml'
+      - 'jobs/nuget.yml'
+      - 'jobs/gitlab.yml'
+
+secret_detection:
+  stage: .pre
+  rules:
+    - when: always
+  allow_failure: false
+
+version:
+  extends: .version
+  stage: .pre
+  rules:
+    - when: always
+
+build: 
+  extends: .gitlab-move-files 
+  stage: build
+  artifacts:
+    paths:
+     - $CI_PROJECT_DIR/output
+
+package:
+  extends: .octo_package
+  stage: package
+  needs: 
+    - job: build
+      artifacts: true
+    - job: version
+      artifacts: true
+  rules:
+    - if: $CI_COMMIT_BRANCH =~ '/^release/'
+    - if: $CI_COMMIT_BRANCH =~ 'main'
+    - when: never
+
+upload:
+  extends: .nuget_push
+  stage: package
+  needs: 
+    - job: version
+      artifacts: true
+    - job: package
+      artifacts: true
+  rules:
+    - if: $CI_COMMIT_BRANCH =~ '/^release/'
+    - if: $CI_COMMIT_BRANCH =~ 'main'
+    - when: never
+
+publish:
+  extends: .octo_release
+  stage: publish
+  needs: 
+    - job: package
+      artifacts: true
+    - job: version
+      artifacts: true
+    - job: upload
+  rules:
+    - if: $CI_COMMIT_BRANCH =~ '/^release/'
+    - if: $CI_COMMIT_BRANCH =~ 'main'
+    - when: never

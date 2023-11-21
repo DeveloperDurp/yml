@@ -1,0 +1,4 @@
+.gitlab-move-files:
+  image: registry.durp.info/debian:latest
+  script:
+    - ./scripts/gitlab/movefiles.sh

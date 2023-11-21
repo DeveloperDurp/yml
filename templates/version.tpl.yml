@@ -3,7 +3,7 @@
   variables:
     GIT_DEPTH: "0"
   script:
-    - ./scripts/version-number.sh
+    - ./scripts/gitversion/version.sh
   artifacts:
     reports:
       dotenv: version.env
