@@ -9,4 +9,4 @@
 .octo_release:
   image: registry.durp.info/octopusdeploy/octo:latest
   script: 
-    - ./scripts/octopus/pack.sh
+    - ./scripts/octopus/create_release.sh
