@@ -3,7 +3,7 @@
   variables:
     GIT_DEPTH: "0"
   script:
-    # Begin of version-number.sh
+    # Begin of version.sh
     - |
       #Check for configuration
       echo "mode: ContinuousDeployment
@@ -37,7 +37,7 @@
       version=$(/tools/dotnet-gitversion /showvariable NuGetVersionV2)
       echo "VERSION=$version" >> version.env
       cat version.env
-    # End of version-number.sh
+    # End of version.sh
   artifacts:
     reports:
       dotenv: version.env

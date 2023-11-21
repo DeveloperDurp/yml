@@ -1,9 +1,15 @@
 .octo_package:
   image: registry.durp.info/octopusdeploy/octo:latest
   script:
-    # Begin of octo-pack.sh
+    # Begin of pack.sh
     - "#Package with octopus\nmkdir $CI_PROJECT_DIR/packages\nIFS=\";\"\ncount=0\nfor i in $projectname; \n  do dotnet /octo/octo.dll pack --id=$i --version=$VERSION --outFolder=$CI_PROJECT_DIR/packages --basePath=$WORKDIR/$i;\n  count=$(($count+1));\n  done\n"
-    # End of octo-pack.sh
+    # End of pack.sh
   artifacts:
     paths:
       - $CI_PROJECT_DIR/packages
+.octo_release:
+  image: registry.durp.info/octopusdeploy/octo:latest
+  script:
+    # Begin of pack.sh
+    - "#Package with octopus\nmkdir $CI_PROJECT_DIR/packages\nIFS=\";\"\ncount=0\nfor i in $projectname; \n  do dotnet /octo/octo.dll pack --id=$i --version=$VERSION --outFolder=$CI_PROJECT_DIR/packages --basePath=$WORKDIR/$i;\n  count=$(($count+1));\n  done\n"
+    # End of pack.sh
