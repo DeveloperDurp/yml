@@ -22,8 +22,8 @@ render-job-templates-yml:
     - if: $CI_COMMIT_BRANCH
       changes:
         - .gitlab-ci.yml
-        - scripts/**
-        - templates/**        
+        - *.sh
+        - *.tpl.yml
         - job-templates.yml
         - job-templates.tpl.yml
 
