@@ -17,13 +17,8 @@
 .octo_release:
   image: registry.durp.info/octopusdeploy/octo:latest
   script:
-    # Begin of pack.sh
+    # Begin of create_release.sh
     - |
-      #Package with octopus
-      mkdir $CI_PROJECT_DIR/packages
-      for dir in ./output/*/;
-      do dir=${dir%*/};
-          dir=${dir##*/};
-          dotnet /octo/octo.dll pack --id=$dir --version=$VERSION --outFolder=$CI_PROJECT_DIR/packages --basePath=$CI_PROJECT_DIR/output/$dir;
-      done
-    # End of pack.sh
+      #Octopus Create Release
+      dotnet /octo/octo.dll create-release --project="$OCTO_PROJECT_NAME" --releaseNumber=$VERSION --server=https://octopus.internal.durp.info/ --apiKey=$OCTOAPI --packagesFolder=$CI_PROJECT_DIR/packages
+    # End of create_release.sh

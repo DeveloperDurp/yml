@@ -47,14 +47,6 @@ render-job-templates-yml:
       git push -o ci.variable="CI_SCRIPTS_SKIP_PIPELINE=true" "https://oauth2:${GITLAB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git" "HEAD:$CI_COMMIT_BRANCH"
       curl --silent --fail --request POST --form token="$CI_JOB_TOKEN" --form ref="$CI_COMMIT_BRANCH" "$CI_API_V4_URL/projects/$CI_PROJECT_ID/trigger/pipeline" >/dev/null
     # End of commit-and-push-changes.sh
-  rules:
-    - if: $CI_COMMIT_BRANCH
-      changes:
-        - .gitlab-ci.yml
-        - scripts/**
-        - templates/**
-        - job-templates.yml
-        - job-templates.tpl.yml
 render-pipelines-to-branch:
   stage: render
   script:
@@ -91,5 +83,3 @@ render-pipelines-to-branch:
       git push -o ci.variable="CI_SCRIPTS_SKIP_PIPELINE=true" "https://oauth2:${GITLAB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git" "HEAD:$CI_COMMIT_BRANCH"
       curl --silent --fail --request POST --form token="$CI_JOB_TOKEN" --form ref="$CI_COMMIT_BRANCH" "$CI_API_V4_URL/projects/$CI_PROJECT_ID/trigger/pipeline" >/dev/null
     # End of commit-and-push-changes.sh
-  rules:
-    - if: $CI_COMMIT_BRANCH =~ /^release*/
