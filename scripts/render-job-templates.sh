@@ -2,7 +2,7 @@
 #%%MULTILINE_YAML_START
 # render job-templates.yml from job-templates.tpl.yml
 set -euo pipefail
-for script in scripts/*.sh; do
+for script in $(find ./scripts -name '*.sh'); do
   awk -v script_name="$(basename "$script")" '
   NR==1 && /^#!/ {printf("# Begin of %s\n",script_name); next}   # strip shebang in first line, print head comment
   /^\s*$/ {next}         # strip any newlines or whitespace
