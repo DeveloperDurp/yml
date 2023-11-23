@@ -13,4 +13,4 @@ docker import $CI_PROJECT_DIR/packages/$containername.$VERSION.tar.gz $CI_REGIST
 docker import $CI_PROJECT_DIR/packages/$containername.$VERSION.tar.gz $CI_REGISTRY/$CI_PROJECT_PATH:$tag
 
 docker push "$CI_REGISTRY/$CI_PROJECT_PATH:$VERSION"
-docker push "$CI_REGISTRY/$CI_PROJECT_PATH:tag"
+docker push "$CI_REGISTRY/$CI_PROJECT_PATH:$tag"
