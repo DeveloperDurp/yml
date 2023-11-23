@@ -21,3 +21,46 @@
       docker push "$CI_REGISTRY/$CI_PROJECT_PATH:latest"
       docker push "$CI_REGISTRY/$CI_PROJECT_PATH:$VERSION"
     # End of docker-build.sh
+.docker_build:
+  image: registry.durp.info/docker:20.10.17
+  variables:
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_HOST: tcp://127.0.0.1:2375/
+  services:
+    - name: docker:dind
+      entrypoint: ["dockerd-entrypoint.sh", "--tls=false"]
+  script:
+    # Begin of build.sh
+    - |
+      #Build Docker Container
+      mkdir $CI_PROJECT_DIR/packages
+      containername=$(echo "$PROJECT_NAME" | awk '{print tolower($0)}')
+      docker build -t $containername .
+      docker save -o $CI_PROJECT_DIR/packages/$containername.$VERSION.tar.gz $containername
+    # End of build.sh
+.docker_push_gitlab:
+  image: registry.durp.info/docker:20.10.17
+  variables:
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_HOST: tcp://127.0.0.1:2375/
+  services:
+    - name: docker:dind
+      entrypoint: ["dockerd-entrypoint.sh", "--tls=false"]
+  script:
+    # Begin of login.sh
+    - |
+      #Docker Login
+      docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY/$CI_PROJECT_PATH
+    # End of login.sh
+
+    # Begin of push-gitlab.sh
+    - |
+      #Push container to gitlab
+      containername=$(echo "$PROJECT_NAME" | awk '{print tolower($0)}')
+      docker import $CI_PROJECT_DIR/packages/$containername.$VERSION.tar.gz $CI_REGISTRY/$CI_PROJECT_PATH:$VERSION
+      docker import $CI_PROJECT_DIR/packages/$containername.$VERSION.tar.gz $CI_REGISTRY/$CI_PROJECT_PATH:latest
+      docker push "$CI_REGISTRY/$CI_PROJECT_PATH:$VERSION"
+      docker push "$CI_REGISTRY/$CI_PROJECT_PATH:latest"
+    # End of push-gitlab.sh
