@@ -28,7 +28,7 @@ build_container:
   stage: build
   artifacts:
     paths:
-     - $CI_PROJECT_DIR/package
+     - $CI_PROJECT_DIR/packages
   needs: 
     - job: version
       artifacts: true
