@@ -23,7 +23,7 @@ version:
   rules:
     - when: always
 
-build: 
+build_container: 
   extends: .docker_build
   stage: build
   artifacts:
@@ -33,7 +33,7 @@ build:
     - job: version
       artifacts: true
 
-upload:
+upload_container:
   extends: .docker_push_gitlab
   stage: package
   needs: 
