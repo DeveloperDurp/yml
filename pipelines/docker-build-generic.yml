@@ -39,7 +39,7 @@ upload_container:
   needs: 
     - job: version
       artifacts: true
-    - job: build
+    - job: build_container
       artifacts: true
   rules:
     - if: $CI_COMMIT_BRANCH =~ '/^release/'
