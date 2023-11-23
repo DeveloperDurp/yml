@@ -10,3 +10,29 @@
   script:
     - ./scripts/docker-login.sh
     - ./scripts/docker-build.sh
+       
+
+.docker_build:
+  image: registry.durp.info/docker:20.10.17
+  variables:
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_HOST: tcp://127.0.0.1:2375/
+  services:
+    - name: docker:dind
+      entrypoint: ["dockerd-entrypoint.sh", "--tls=false"]
+  script:
+    - ./scripts/docker/build.sh
+
+.docker_push_gitlab:
+  image: registry.durp.info/docker:20.10.17
+  variables:
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_HOST: tcp://127.0.0.1:2375/
+  services:
+    - name: docker:dind
+      entrypoint: ["dockerd-entrypoint.sh", "--tls=false"]
+  script:
+    - ./scripts/docker/login.sh
+    - ./scripts/docker/push-gitlab.sh
