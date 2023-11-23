@@ -5,7 +5,7 @@ stages:
 
 include:
   - project: 'developerdurp/yml'
-    ref: main
+    ref: 'main'
     file: 
       - 'jobs/version.yml'
       - 'jobs/sonarqube.yml'

@@ -17,7 +17,7 @@ image:
 
 include:
   - project: 'developerdurp/yml'
-    ref: main
+    ref: 'main'
     file: 
       - 'jobs/terraform.yml'
 
