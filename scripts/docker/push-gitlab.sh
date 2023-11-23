@@ -2,9 +2,9 @@
 #%%MULTILINE_YAML_START
 #Push container to gitlab
 containername=$(echo "$PROJECT_NAME" | awk '{print tolower($0)}')
-if [[ "$VERSION" =~ ^([0-9]+(\.[0-9]+)*)$ ]] 
-then
-  tag="latest" 
+
+if echo "$VERSION" | grep -Eq '^[0-9]+(\.[0-9]+)*$'; then
+  tag="latest"
 else
   tag="dev"
 fi
