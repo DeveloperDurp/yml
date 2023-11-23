@@ -33,9 +33,9 @@ build_container:
     - job: version
       artifacts: true
 
-upload_container:
+publish_container:
   extends: .docker_push_gitlab
-  stage: package
+  stage: publish
   needs: 
     - job: version
       artifacts: true
