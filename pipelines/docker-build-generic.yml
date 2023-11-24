@@ -24,7 +24,7 @@ version:
     - when: always
 
 build_container: 
-  extends: .docker_build
+  extends: .docker-build-container
   stage: build
   artifacts:
     paths:
@@ -33,15 +33,15 @@ build_container:
     - job: version
       artifacts: true
 
-publish_container:
-  extends: .docker_push_gitlab
-  stage: publish
-  needs: 
-    - job: version
-      artifacts: true
-    - job: build_container
-      artifacts: true
-  rules:
-    - if: $CI_COMMIT_BRANCH =~ '/^release/'
-    - if: $CI_COMMIT_BRANCH =~ 'main'
-    - when: never
+#publish_container:
+#  extends: .docker_push_gitlab
+#  stage: publish
+#  needs: 
+#    - job: version
+#      artifacts: true
+#    - job: build_container
+#      artifacts: true
+#  rules:
+#    - if: $CI_COMMIT_BRANCH =~ '/^release/'
+#    - if: $CI_COMMIT_BRANCH =~ 'main'
+#    - when: never
