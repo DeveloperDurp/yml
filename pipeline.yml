@@ -1,4 +1,21 @@
+stages:
+  - compliance
+  - deploy
+
+compliance:
+  stage: compliance
+  trigger:
+  include: 
+    - project: 'developerdurp/yml'
+      ref: 'main'
+      file:
+        - 'pipelines/compliance.yml'
+
+
 gitlab_generic_package:
+  stage: deploy
+  needs: 
+    - job: version
   trigger: 
     include: 
     - project: 'developerdurp/yml'

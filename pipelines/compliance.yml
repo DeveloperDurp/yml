@@ -1,0 +1,11 @@
+stages:
+  - compliance
+
+include:
+  - template: Security/Secret-Detection.gitlab-ci.yml
+
+secret_detection:
+  stage: .pre
+  rules:
+    - when: always
+  allow_failure: false
