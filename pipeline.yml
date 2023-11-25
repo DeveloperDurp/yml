@@ -1,8 +1,10 @@
 stages:
   - compliance
   - deploy
+
 variables:
-  GOLANGCI-LINT-VERISON: "v1.55.2"
+  GO_VERSION: "1.20"
+  GOLANGCI_LINT_VERISON: "v1.55.2"
 
 compliance:
   stage: compliance
