@@ -21,9 +21,6 @@ version:
 build: 
   extends: .gitlab-move-files 
   stage: build
-  artifacts:
-    paths:
-     - $CI_PROJECT_DIR/output
 
 package:
   extends: .octo_package

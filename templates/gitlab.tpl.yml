@@ -2,3 +2,7 @@
   image: registry.durp.info/debian:latest
   script:
     - ./scripts/gitlab/movefiles.sh
+  artifacts:
+    expire_in: 1 hour
+    paths:
+     - $CI_PROJECT_DIR/output
