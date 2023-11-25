@@ -7,6 +7,7 @@ include:
   - project: 'developerdurp/yml'
     ref: 'main'
     file: 
+      - 'jobs/octopus.yml'
       - 'jobs/version.yml'
       - 'jobs/sonarqube.yml'
       - 'jobs/golang.yml'
@@ -37,3 +38,20 @@ docker:
     - if: $CI_COMMIT_REF_NAME == 'main'
     - if: $CI_COMMIT_BRANCH =~ '/^release/'
 
+publish:
+  extends: .octo_release
+  stage: publish
+  needs: 
+    - job: package
+      artifacts: true
+    - job: version
+      artifacts: true
+    - job: upload
+  rules:
+    - if: $CI_COMMIT_BRANCH =~ '/^release/'
+      exists:
+        - $OCTO_PROJECT_NAME
+    - if: $CI_COMMIT_BRANCH =~ 'main'
+      exists:
+        - $OCTO_PROJECT_NAME
+    - when: never

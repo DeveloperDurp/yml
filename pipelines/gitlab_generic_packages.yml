@@ -59,5 +59,9 @@ publish:
     - job: upload
   rules:
     - if: $CI_COMMIT_BRANCH =~ '/^release/'
+      exists:
+        - $OCTO_PROJECT_NAME
     - if: $CI_COMMIT_BRANCH =~ 'main'
+      exists:
+        - $OCTO_PROJECT_NAME
     - when: never
