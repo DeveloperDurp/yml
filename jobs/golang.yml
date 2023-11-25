@@ -13,8 +13,9 @@
 .golang-lint:
   variables:
     #GOPROXY: https://nexus.durp.info/repository/go/
+    GOLANGCI-LING-VERISON: v1.55.2
     CGO_ENABLED: 0
-  image: registry.durp.info/golangci/golangci-lint:v1.55.2
+  image: registry.durp.info/golangci/golangci-lint:$GOLANGCI-LING-VERISON
   script:
     # Begin of golang-lint.sh
     - |
