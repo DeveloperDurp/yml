@@ -13,7 +13,7 @@
 .golang-lint:
   variables:
     GOPROXY: https://nexus.durp.info/repository/go/
-  image: registry.durp.info/golangci/golangci-lint:latest
+  image: registry.durp.info/golangci/golangci-lint:v1.55.2
   script:
     # Begin of golang-lint.sh
     - |
