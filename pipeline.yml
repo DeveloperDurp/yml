@@ -4,6 +4,7 @@ stages:
 
 compliance:
   stage: compliance
+  strategy: depend
   trigger:
     include: 
     - project: 'developerdurp/yml'
