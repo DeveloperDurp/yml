@@ -25,3 +25,16 @@ gitlab_generic_package:
         - 'pipelines/gitlab_generic_packages.yml'
   rules:
     - if: '$PIPELINE =~ /gitlab/'
+
+build_go_api:
+  stage: deploy
+  needs: 
+    - job: compliance
+  trigger: 
+    include: 
+    - project: 'developerdurp/yml'
+      ref: 'main'
+      file:
+        - 'pipelines/golang.yml'
+  rules:
+    - if: '$PIPELINE =~ /goapi/'

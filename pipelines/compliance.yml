@@ -3,9 +3,29 @@ stages:
 
 include:
   - template: Security/Secret-Detection.gitlab-ci.yml
+  - project: 'developerdurp/yml'
+    ref: 'main'
+    file: 
+      - 'jobs/sonarqube.yml'
+      - 'jobs/golang.yml'
 
 secret_detection:
   stage: compliance
   rules:
     - when: always
   allow_failure: false
+
+sonarqube:
+  extends: .sonarcloud-check
+  stage: compliance
+  rules:
+    - if: $CI_COMMIT_REF_NAME == 'main' || $CI_PIPELINE_SOURCE == 'merge_request_event'
+      exists:
+        - "go.mod"  
+
+golang-lint:
+  extends: .golang-lint
+  stage: compliance
+  rules:
+    - exists:
+      - "go.mod"  
