@@ -42,11 +42,8 @@ publish:
   extends: .octo_release
   stage: publish
   needs: 
-    - job: package
-      artifacts: true
     - job: version
       artifacts: true
-    - job: upload
   rules:
     - if: $CI_COMMIT_BRANCH =~ '/^release/'
       exists:
