@@ -1,0 +1,4 @@
+gitlab_generic_package:
+  trigger: pipelines/gitlab_generic_package.yml
+  rules:
+    - if: '$PIPELINE =~ /gitlab/'
