@@ -1,5 +1,5 @@
 gitlab_generic_package:
   trigger: 
-    - local: pipelines/gitlab_generic_packages.yml
+    include: pipelines/gitlab_generic_packages.yml
   rules:
     - if: '$PIPELINE =~ /gitlab/'
