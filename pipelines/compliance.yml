@@ -21,7 +21,7 @@ sonarqube:
   rules:
     - if: $CI_COMMIT_REF_NAME == 'main' || $CI_PIPELINE_SOURCE == 'merge_request_event'
       exists:
-        - "go.mod"  
+        - "sonar-project.properties"  
 
 golang-lint:
   extends: .golang-lint
