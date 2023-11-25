@@ -11,3 +11,7 @@
         cp -r $CI_PROJECT_DIR/$i $CI_PROJECT_DIR/output/;
         done
     # End of movefiles.sh
+  artifacts:
+    expire_in: 1 hour
+    paths:
+      - $CI_PROJECT_DIR/output
