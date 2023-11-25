@@ -1,5 +1,9 @@
 gitlab_generic_package:
   trigger: 
-    include: pipelines/gitlab_generic_packages.yml
+    include: 
+    - project: 'developerdurp/yml'
+      ref: 'main'
+      file:
+        - 'pipelines/gitlab_generic_packages.yml'
   rules:
     - if: '$PIPELINE =~ /gitlab/'
