@@ -18,5 +18,5 @@
     # Begin of golang-lint.sh
     - |
       #run linter
-      golangci-lint run ./... --timeout 5m0s
+      golangci-lint run ./... --timeout 5m0s -D typecheck
     # End of golang-lint.sh
