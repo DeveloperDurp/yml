@@ -15,7 +15,7 @@ compliance:
 gitlab_generic_package:
   stage: deploy
   needs: 
-    - job: version
+    - job: compliance
   trigger: 
     include: 
     - project: 'developerdurp/yml'
