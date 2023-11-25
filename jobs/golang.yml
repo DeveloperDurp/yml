@@ -13,10 +13,10 @@
 .golang-lint:
   variables:
     GOPROXY: https://nexus.durp.info/repository/go/
-  image: registry.durp.info/golangci/golangci-lint:v1.55.2
+  image: registry.durp.info/golangci/golangci-lint:v1.54
   script:
     # Begin of golang-lint.sh
     - |
       #run linter
-      golangci-lint run ./... --timeout 5m0s -D typecheck
+      golangci-lint run ./... --timeout 5m0s
     # End of golang-lint.sh
