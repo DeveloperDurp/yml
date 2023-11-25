@@ -5,7 +5,7 @@ stages:
 compliance:
   stage: compliance
   trigger:
-  include: 
+    include: 
     - project: 'developerdurp/yml'
       ref: 'main'
       file:
