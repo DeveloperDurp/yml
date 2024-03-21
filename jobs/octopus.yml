@@ -1,5 +1,5 @@
 .octo_package:
-  image: registry.durp.info/octopusdeploy/octo:latest
+  image: registry.internal.durp.info/octopusdeploy/octo:latest
   script:
     # Begin of pack.sh
     - |
@@ -15,7 +15,7 @@
     paths:
       - $CI_PROJECT_DIR/packages
 .octo_release:
-  image: registry.durp.info/octopusdeploy/octo:latest
+  image: registry.internal.durp.info/octopusdeploy/octo:latest
   script:
     # Begin of create_release.sh
     - |

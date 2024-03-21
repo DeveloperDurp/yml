@@ -1,5 +1,5 @@
 .helm-build:
-  image: dtzar/helm-kubectl
+  image: registry.internal.durp.info/dtzar/helm-kubectl
   script:
     # Begin of helm-package.sh
     - |
@@ -16,7 +16,7 @@
     paths:
       - $CI_PROJECT_DIR/packages
 .helm-push:
-  image: dtzar/helm-kubectl
+  image: registry.internal.durp.info/dtzar/helm-kubectl
   script:
     # Begin of helm-addrepo.sh
     - |

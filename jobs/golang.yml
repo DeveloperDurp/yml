@@ -1,7 +1,7 @@
 .golang-build-api:
   variables:
   #GOPROXY: https://nexus.durp.info/repository/go/
-  image: registry.durp.info/golang:${GO_VERSION}
+  image: registry.internal.durp.info/golang:${GO_VERSION}
   script:
     # Begin of golang-build-api.sh
     - "#Build golang api\nexport GOPATH=/go\nexport PATH=$PATH:$GOPATH/bin\nmkdir output\ngo install \ngo install github.com/swaggo/swag/cmd/swag@v1.8.12 \nswag init\nCGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o ./output/main .\n"
@@ -14,7 +14,7 @@
   variables:
     #GOPROXY: https://nexus.durp.info/repository/go/
     CGO_ENABLED: 0
-  image: registry.durp.info/golangci/golangci-lint:${GOLANGCI_LINT_VERISON}
+  image: registry.internal.durp.info/golangci/golangci-lint:${GOLANGCI_LINT_VERISON}
   script:
     # Begin of golang-lint.sh
     - |
