@@ -1,7 +1,7 @@
 .golang-build-api:
   variables:
     #GOPROXY: https://nexus.durp.info/repository/go/
-  image: registry.durp.info/golang:${GO_VERSION}
+  image: registry.internal.durp.info/golang:${GO_VERSION}
   script:
     - ./scripts/golang-build-api.sh
   artifacts:
@@ -13,6 +13,6 @@
   variables:
     #GOPROXY: https://nexus.durp.info/repository/go/
     CGO_ENABLED: 0
-  image: registry.durp.info/golangci/golangci-lint:${GOLANGCI_LINT_VERISON}
+  image: registry.internal.durp.info/golangci/golangci-lint:${GOLANGCI_LINT_VERISON}
   script:
     - ./scripts/golang-lint.sh

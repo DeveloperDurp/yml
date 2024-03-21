@@ -1,5 +1,5 @@
 .octo_package:
-  image: registry.durp.info/octopusdeploy/octo:latest
+  image: registry.internal.durp.info/octopusdeploy/octo:latest
   script: 
     - ./scripts/octopus/pack.sh
   artifacts:
@@ -7,6 +7,6 @@
     - $CI_PROJECT_DIR/packages
 
 .octo_release:
-  image: registry.durp.info/octopusdeploy/octo:latest
+  image: registry.internal.durp.info/octopusdeploy/octo:latest
   script: 
     - ./scripts/octopus/create_release.sh

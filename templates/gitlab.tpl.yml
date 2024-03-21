@@ -1,5 +1,5 @@
 .gitlab-move-files:
-  image: registry.durp.info/debian:latest
+  image: registry.internal.durp.info/debian:latest
   script:
     - ./scripts/gitlab/movefiles.sh
   artifacts:

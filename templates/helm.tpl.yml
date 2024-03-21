@@ -1,5 +1,5 @@
 .helm-build:
-  image: dtzar/helm-kubectl
+  image: registry.internal.durp.info/dtzar/helm-kubectl
   script:
     - ./scripts/helm-package.sh
   artifacts:
@@ -8,7 +8,7 @@
       - $CI_PROJECT_DIR/packages        
 
 .helm-push:
-  image: dtzar/helm-kubectl
+  image: registry.internal.durp.info/dtzar/helm-kubectl
   script:
     - ./scripts/helm-addrepo.sh
     - ./scripts/helm-push.sh
