@@ -14,3 +14,25 @@
     expire_in: 1 hour
     paths:
       - $CI_PROJECT_DIR/output
+.gitlab-deploy:
+  stage: deploy
+  image: mcr.microsoft.com/powershell:latest
+  script:
+    # Begin of movefiles.sh
+    - |
+      #move files to output
+      mkdir $CI_PROJECT_DIR/output
+      for i in $(echo $PROJECT_NAME | tr ";" "\n");
+        do mkdir $CI_PROJECT_DIR/output/$i;
+        cp -r $CI_PROJECT_DIR/$i $CI_PROJECT_DIR/output/;
+        done
+    # End of movefiles.sh
+  environment:
+    name: production
+    url: https://api.durp.info/goapi
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH || $CI_COMMIT_BRANCH =~ '/^release/'
+      when: manual
+  needs:
+    - job: version
+      artifacts: true
