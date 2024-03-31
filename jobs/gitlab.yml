@@ -18,15 +18,23 @@
   stage: deploy
   image: mcr.microsoft.com/powershell:latest
   script:
-    # Begin of movefiles.sh
+    # Begin of update-chart.sh
     - |
-      #move files to output
-      mkdir $CI_PROJECT_DIR/output
-      for i in $(echo $PROJECT_NAME | tr ";" "\n");
-        do mkdir $CI_PROJECT_DIR/output/$i;
-        cp -r $CI_PROJECT_DIR/$i $CI_PROJECT_DIR/output/;
-        done
-    # End of movefiles.sh
+      pwsh -c "Install-Module -Name powershell-yaml -Confirm:\$false -Force
+      \$template = (Invoke-RestMethod -Headers @{ 'PRIVATE-TOKEN'= \$ENV:CI_JOB_TOKEN } `
+                                     -Uri \"https://gitlab.com/api/v4/projects/45028985/repository/files/durpapi%2FChart.yaml/raw?ref=main\") | ConvertFrom-Yaml
+      \$template.version = \$ENV:VERSION
+      \$body = @{
+        branch = \"main\"
+        commit_message = \"Update Chart\"
+        content = \"\$(\$template | convertto-yaml)\"
+      } | ConvertTo-Json
+      Invoke-RestMethod -Headers @{ 'PRIVATE-TOKEN'= \$ENV:CI_JOB_TOKEN } `
+                        -ContentType \"application/json\" `
+                        -Method Put `
+                        -body \$body `
+                        -Uri \"https://gitlab.com/api/v4/projects/45028985/repository/files/durpapi%2FChart.yaml\""
+    # End of update-chart.sh
   environment:
     name: production
     url: https://api.durp.info/goapi
