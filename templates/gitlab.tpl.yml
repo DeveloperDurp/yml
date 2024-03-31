@@ -11,7 +11,7 @@
   stage: deploy
   image: mcr.microsoft.com/powershell:latest
   script:
-    - ./scripts/gitlab/update-chart.sh
+    - ./scripts/gitlab/movefiles.sh
   environment:
     name: production
     url: https://api.durp.info/goapi
