@@ -6,3 +6,18 @@
     expire_in: 1 hour
     paths:
      - $CI_PROJECT_DIR/output
+
+.gitlab-deploy:
+  stage: deploy
+  image: mcr.microsoft.com/powershell:latest
+  script:
+    - ./scripts/gitlab/update-chart.sh
+  environment:
+    name: production
+    url: https://api.durp.info/goapi
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH || $CI_COMMIT_BRANCH =~ '/^release/'
+      when: manual
+  needs: 
+    - job: version
+      artifacts: true

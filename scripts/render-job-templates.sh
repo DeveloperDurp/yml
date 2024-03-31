@@ -2,6 +2,22 @@
 #%%MULTILINE_YAML_START
 # render job-templates.yml from job-templates.tpl.yml
 set -euo pipefail
+for pwsh in  $(find ./scripts -name '*.ps1'); do
+  script=$(cat $pwsh)
+  sh_file="${pwsh%.ps1}.sh"
+     
+  # Escape double quotes and dollar signs
+  script="${script//\"/\\\"}"
+  script="${script//\$/\\\$}"
+
+  pwsh_command="pwsh -c \"$script\""
+
+  echo '#!/bin/bash' > "$sh_file"
+  echo "$pwsh_command" >> "$sh_file"
+done
+
+
+
 for script in $(find ./scripts -name '*.sh'); do
   awk -v script_name="$(basename "$script")" '
   NR==1 && /^#!/ {printf("# Begin of %s\n",script_name); next}   # strip shebang in first line, print head comment
