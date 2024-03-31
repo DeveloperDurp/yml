@@ -1,11 +1,11 @@
-.golang-build-api:
+.golang-build:
   variables:
   #GOPROXY: https://nexus.durp.info/repository/go/
   image: registry.internal.durp.info/golang:${GO_VERSION}
   script:
-    # Begin of golang-build-api.sh
-    - "#Build golang api\nexport GOPATH=/go\nexport PATH=$PATH:$GOPATH/bin\nmkdir output\ngo install \ngo install github.com/swaggo/swag/cmd/swag@v1.8.12 \nswag init\nCGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o ./output/main .\n"
-    # End of golang-build-api.sh
+    # Begin of golang-build.sh
+    - "#Build golang project\nexport GOPATH=/go\nexport PATH=$PATH:$GOPATH/bin\nmkdir output\ngo install \n# Check if go.mod contains \"swag\"\nif grep -q \"swag\" go.mod; then\n    echo \"Found 'swag' in go.mod. Running swag init...\"\n    go install github.com/swaggo/swag/cmd/swag@v1.8.12 \n    swag init\nfi\nCGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o ./output/main .\n"
+    # End of golang-build.sh
   artifacts:
     expire_in: 1 hour
     paths:
