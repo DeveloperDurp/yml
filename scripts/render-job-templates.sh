@@ -12,7 +12,8 @@ for pwsh in  $(find ./scripts -name '*.ps1'); do
 
   pwsh_command="pwsh -c \"$script\""
 
-  echo '#!/bin/bash' > "$sh_file"
+  echo '#!/usr/bin/env bash' > "$sh_file"
+  echo '#%%MULTILINE_YAML_START' >> "$sh_file"
   echo "$pwsh_command" >> "$sh_file"
 done
 
