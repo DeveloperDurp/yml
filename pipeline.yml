@@ -6,26 +6,6 @@ variables:
   GO_VERSION: "1.20"
   GOLANGCI_LINT_VERISON: "v1.55.2"
 
-
-
-
-
-
-
-
-
-
-compliance:
-  stage: compliance
-  trigger:
-    strategy: depend
-    include: 
-    - project: 'developerdurp/yml'
-      ref: 'main'
-      file:
-        - 'pipelines/compliance.yml'
-
-
 gitlab_generic_package:
   stage: deploy
   needs: 
@@ -50,6 +30,5 @@ build_go_api:
       file:
         - 'pipelines/golang.yml'
   rules:
-    - if: '$PIPELINE =~ /goapi/'
-      exists:
+    - exists:
       - "go.mod"  
