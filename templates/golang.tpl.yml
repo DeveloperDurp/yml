@@ -1,9 +1,9 @@
-.golang-build-api:
+.golang-build:
   variables:
     #GOPROXY: https://nexus.durp.info/repository/go/
   image: registry.internal.durp.info/golang:${GO_VERSION}
   script:
-    - ./scripts/golang-build-api.sh
+    - ./scripts/golang-build.sh
   artifacts:
     expire_in: 1 hour
     paths:

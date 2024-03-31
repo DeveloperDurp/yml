@@ -23,7 +23,7 @@ version:
 gobuild:
   variables:
     GOPROXY: https://nexus.durp.info/repository/go/
-  extends: .golang-build-api
+  extends: .golang-build
   stage: build
 
 docker:
