@@ -12,7 +12,7 @@ go mod download
 # Check if go.mod contains "swag"
 if grep -q "swag" go.mod; then
     echo "Found 'swag' in go.mod. Running swag init..."
-    go install github.com/swaggo/swag/cmd/swag@v1.8.12 
+    #go install github.com/swaggo/swag/cmd/swag@v1.8.12 
     swag init
 fi
 
