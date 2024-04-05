@@ -6,7 +6,8 @@ export PATH=$PATH:$GOPATH/bin
 
 mkdir output
 
-go install 
+#go install 
+go mod download
 
 # Check if go.mod contains "swag"
 if grep -q "swag" go.mod; then
