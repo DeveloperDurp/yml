@@ -4,7 +4,7 @@
     # Begin of syft-install.sh
     - |
       #Syft install
-      nix-shell -p syft
+      nix-env -iA nixpkgs.syft
     # End of syft-install.sh
 
     # Begin of syft-mkdir.sh
@@ -30,7 +30,7 @@
     # Begin of grype-install.sh
     - |
       #Syft install
-      nix-shell -p grype
+      nix-env -iA nixpkgs.grype
     # End of grype-install.sh
 
     # Begin of grype.sh
