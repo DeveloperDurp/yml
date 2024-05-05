@@ -1,18 +1,38 @@
 .generate_sbom:
-  image: registry.internal.durp.info/anchore/syft:${SYFT_VERSION}
+  image: registry.internal.durp.info/nixos/nix:latest
   script:
+    # Begin of syft-install.sh
+    - |
+      #Syft install
+      nix-shell -p syft
+    # End of syft-install.sh
+
     # Begin of syft-mkdir.sh
     - |
       #mkdir for syft files
       mkdir $CI_PROJECT_DIR/syft
     # End of syft-mkdir.sh
+
+    # Begin of syft-go.sh
+    - |
+      #Syft scan for go
+      if [ -f "go.mod" ]; then
+          syft go.mod -o cyclonedx-json=syft/${CI_PROJECT_NAME}.sbom.json
+      fi
+    # End of syft-go.sh
   artifacts:
     expire_in: 1 hour
     paths:
       - $CI_PROJECT_DIR/syft
 .generate_cve:
-  image: registry.internal.durp.info/anchore/grype:${GRYPE_VERSION}
+  image: registry.internal.durp.info/nixos/nix:latest
   script:
+    # Begin of grype-install.sh
+    - |
+      #Syft install
+      nix-shell -p grype
+    # End of grype-install.sh
+
     # Begin of grype.sh
     - |
       #grype scan sboms
