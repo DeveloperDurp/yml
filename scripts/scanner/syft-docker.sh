@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #%%MULTILINE_YAML_START
-#Syft scan for go
+#Syft scan for docker
 
 for i in packages/*.tar.gz;
 do filename=${i%.*.tar.gz};
