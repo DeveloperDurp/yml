@@ -22,7 +22,12 @@
     - name: docker:dind
       entrypoint: ["dockerd-entrypoint.sh", "--tls=false"]
   script:
+    - ./scripts/checkvariable/version.sh
     - ./scripts/docker/build.sh
+  artifacts:
+    expire_in: 1 hour
+    paths:
+      - $CI_PROJECT_DIR/packages
 
 .docker_push_gitlab:
   image: registry.internal.durp.info/docker:20.10.17

@@ -3,8 +3,8 @@ stages:
   - deploy
 
 variables:
-  GO_VERSION: "1.20"
-  GOLANGCI_LINT_VERISON: "v1.55.2"
+  GO_VERSION: "1.22"
+  GOLANGCI_LINT_VERISON: "v1.58.0"
 
 gitlab_generic_package:
   stage: deploy
@@ -19,10 +19,10 @@ gitlab_generic_package:
   rules:
     - if: '$PIPELINE =~ /gitlab/'
 
-build_go_api:
+build_go:
   stage: deploy
-  needs: 
-    - job: compliance
+    #needs: 
+    #  - job: compliance
   trigger: 
     include: 
     - project: 'developerdurp/yml'

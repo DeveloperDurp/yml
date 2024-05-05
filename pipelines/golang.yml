@@ -1,6 +1,7 @@
 stages:
   - build
   - package
+  - validate
   - publish 
 
 include:
@@ -26,8 +27,21 @@ gobuild:
   extends: .golang-build
   stage: build
 
+docker-build:
+  extends: .docker_build
+  stage: build
+  needs:
+    - job: gobuild
+      artifacts: true
+    - job: version
+      optional: true
+      artifacts: true        
+  rules:
+    - exists:
+      - "Dockerfile"  
+
 docker:
-  extends: .docker-build-container
+  extends: .docker_push_gitlab
   stage: publish
   needs:
     - job: gobuild
@@ -36,19 +50,8 @@ docker:
       artifacts: true        
   rules:
     - if: $CI_COMMIT_REF_NAME == 'main'
-    - if: $CI_COMMIT_BRANCH =~ '/^release/'
-
-publish:
-  extends: .octo_release
-  stage: publish
-  needs: 
-    - job: version
-      artifacts: true
-  rules:
+      exists:
+        - "Dockerfile"  
     - if: $CI_COMMIT_BRANCH =~ '/^release/'
       exists:
-        - $OCTO_PROJECT_NAME
-    - if: $CI_COMMIT_BRANCH =~ 'main'
-      exists:
-        - $OCTO_PROJECT_NAME
-    - when: never
+        - "Dockerfile"  
