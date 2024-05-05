@@ -14,18 +14,44 @@ include:
       - 'jobs/golang.yml'
       - 'jobs/docker.yml'
 
+secret_detection:
+  stage: compliance
+  rules:
+    - if: $CI_MERGE_REQUEST_IID
+  allow_failure: false
+
+sonarqube:
+  extends: .sonarcloud-check
+  stage: compliance
+  allow_failure: true
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH || $CI_COMMIT_BRANCH =~ '/^release/' || $CI_MERGE_REQUEST_IID
+      exists:
+        - "sonar-project.properties"  
+
+golang-lint:
+  extends: .golang-lint
+  stage: compliance
+  rules:
+    - if: $CI_MERGE_REQUEST_IID
+      exists:
+        - "go.mod"  
+
 version:
   extends: .version
   stage: .pre
   rules:
-    - if: $CI_COMMIT_REF_NAME == 'main'
-    - if: $CI_COMMIT_BRANCH =~ '/^release/'
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH || $CI_COMMIT_BRANCH =~ '/^release/'
 
 gobuild:
   variables:
     GOPROXY: https://nexus.durp.info/repository/go/
   extends: .golang-build
   stage: build
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH || $CI_COMMIT_BRANCH =~ '/^release/'
+      exists:
+        - "go.mod"  
 
 docker-build:
   extends: .docker_build
@@ -37,7 +63,9 @@ docker-build:
       optional: true
       artifacts: true        
   rules:
-    - exists:
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH || $CI_COMMIT_BRANCH =~ '/^release/'
+      exists:
       - "Dockerfile"  
 
 docker-push:
@@ -49,9 +77,6 @@ docker-push:
     - job: version
       artifacts: true        
   rules:
-    - if: $CI_COMMIT_REF_NAME == 'main'
-      exists:
-        - "Dockerfile"  
-    - if: $CI_COMMIT_BRANCH =~ '/^release/'
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH || $CI_COMMIT_BRANCH =~ '/^release/'
       exists:
         - "Dockerfile"  
