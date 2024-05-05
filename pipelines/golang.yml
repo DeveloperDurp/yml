@@ -16,14 +16,14 @@ include:
       - 'jobs/docker.yml'
 
 secret_detection:
-  stage: compliance
+  stage: validate
   rules:
     - if: $CI_MERGE_REQUEST_IID
   allow_failure: false
 
 sonarqube:
   extends: .sonarcloud-check
-  stage: compliance
+  stage: validate
   allow_failure: true
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH || $CI_COMMIT_BRANCH =~ '/^release/' || $CI_MERGE_REQUEST_IID
@@ -32,7 +32,7 @@ sonarqube:
 
 golang-lint:
   extends: .golang-lint
-  stage: compliance
+  stage: validate
   rules:
     - if: $CI_MERGE_REQUEST_IID
       exists:
