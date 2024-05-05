@@ -31,6 +31,15 @@
     - name: docker:dind
       entrypoint: ["dockerd-entrypoint.sh", "--tls=false"]
   script:
+    # Begin of version.sh
+    - |
+      #check for Version variable
+      if [ -z "${VERSION}" ]; then
+          # If not, assign a default value
+          VERSION=$CI_COMMIT_SHORT_SHA
+      fi
+    # End of version.sh
+
     # Begin of build.sh
     - |
       #Build Docker Container
@@ -39,6 +48,10 @@
       docker build -t $containername .
       docker save -o $CI_PROJECT_DIR/packages/$containername.$VERSION.tar.gz $containername
     # End of build.sh
+  artifacts:
+    expire_in: 1 hour
+    paths:
+      - $CI_PROJECT_DIR/packages
 .docker_push_gitlab:
   image: registry.internal.durp.info/docker:20.10.17
   variables:
