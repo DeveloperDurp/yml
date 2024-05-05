@@ -15,7 +15,7 @@ generate_sbom:
       optional: true
       artifacts: true
   rules:
-    - !reference [.default_rules, mr-rules]
+    - !reference [.default_mr_rules, rules]
 
 generate_cve:
   extends: .generate_cve
@@ -24,4 +24,4 @@ generate_cve:
     - job: generate_sbom
       artifacts: true
   rules:
-    - !reference [.default_rules, mr-rules]
+    - !reference [.default_mr_rules, rules]

@@ -16,3 +16,5 @@ include:
       - 'pipelines/docker-build.yml'
       - 'pipelines/linter.yml'
       - 'pipelines/security.yml'
+      - 'rules/rules.yml'
+      - 'rules/mr-rules.yml'
