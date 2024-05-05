@@ -6,14 +6,6 @@
       #mkdir for syft files
       mkdir $CI_PROJECT_DIR/syft
     # End of syft-mkdir.sh
-
-    # Begin of syft-go.sh
-    - |
-      #Syft scan for go
-      if [ -f "go.mod" ]; then
-          syft go.mod -o cyclonedx-json=syft/${CI_PROJECT_NAME}.sbom.json
-      fi
-    # End of syft-go.sh
   artifacts:
     expire_in: 1 hour
     paths:
