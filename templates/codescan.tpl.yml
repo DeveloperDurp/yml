@@ -1,0 +1,18 @@
+.generate_sbom:
+  image: registry.internal.durp.info/anchore/syft:${SYFT_VERSION}
+  script:
+    - ./scripts/scanner/syft-mkdir.sh
+    - ./scripts/scanner/syft-go.sh
+  artifacts:
+    expire_in: 1 hour
+    paths:
+      - $CI_PROJECT_DIR/syft
+
+.generate_cve:
+  image: registry.internal.durp.info/anchore/grype:${GRYPE_VERSION}
+  script:
+    - ./scripts/scanner/grype.sh
+  artifacts:
+    expire_in: 1 hour
+    paths:
+      - $CI_PROJECT_DIR/syft

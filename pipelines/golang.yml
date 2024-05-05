@@ -1,6 +1,5 @@
 stages:
   - build
-  - package
   - validate
   - publish 
 
@@ -38,6 +37,18 @@ golang-lint:
       exists:
         - "go.mod"  
 
+generate_sbom:
+  extends: .generate_sbom
+  stage: validate
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH || $CI_COMMIT_BRANCH =~ '/^release/' || $CI_MERGE_REQUEST_IID
+
+generate_cve:
+  extends: .generate_cve
+  stage: validate
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH || $CI_COMMIT_BRANCH =~ '/^release/' || $CI_MERGE_REQUEST_IID
+
 version:
   extends: .version
   stage: .pre
@@ -63,7 +74,6 @@ docker-build:
     - job: version
       optional: true
       artifacts: true        
-  rules:
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH || $CI_COMMIT_BRANCH =~ '/^release/' || $CI_MERGE_REQUEST_IID
       exists:
