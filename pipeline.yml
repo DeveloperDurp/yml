@@ -15,4 +15,5 @@ include:
     file: 
       - 'pipelines/compliance.yml'
       - 'pipelines/go-build.yml'
+      - 'pipelines/docker-build.yml'
       - 'pipelines/linter.yml'
