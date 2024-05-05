@@ -31,6 +31,6 @@ docker-push:
     - job: version
       artifacts: true        
   rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH || $CI_COMMIT_BRANCH =~ '/^release/'
+    - if: $CI_PIPELINE_SOURCE == $CI_DEFAULT_BRANCH || $CI_COMMIT_BRANCH =~ '/^release/'
       exists:
         - "Dockerfile"  

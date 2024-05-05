@@ -15,7 +15,7 @@ generate_sbom:
       optional: true
       artifacts: true
   rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH || $CI_COMMIT_BRANCH =~ '/^release/' || $CI_MERGE_REQUEST_IID
+    - !reference [.default_rules, mr-rules]
 
 generate_cve:
   extends: .generate_cve
@@ -24,4 +24,4 @@ generate_cve:
     - job: generate_sbom
       artifacts: true
   rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH || $CI_COMMIT_BRANCH =~ '/^release/' || $CI_MERGE_REQUEST_IID
+    - !reference [.default_rules, mr-rules]
