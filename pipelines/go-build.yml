@@ -9,11 +9,68 @@ include:
     ref: 'main'
     file: 
       - 'jobs/golang.yml'
-      - 'pipelines/compliance.yml'
-      - 'pipelines/docker-build.yml'
-      - 'pipelines/linter.yml'
-      - 'pipelines/security.yml'
+      - 'jobs/version.yml'
+      - 'jobs/sonarqube.yml'
+      - 'jobs/golang.yml'
+      - 'jobs/docker.yml'
+      - 'jobs/codescan.yml'
       - 'rules/rules.yml'
+
+generate_sbom:
+  extends: .generate_sbom
+  stage: build
+  needs:
+    - job: docker-build
+      optional: true
+      artifacts: true
+  rules:
+    - !reference [.default_mr_rules, rules]
+
+generate_cve:
+  extends: .generate_cve
+  stage: build
+  needs:
+    - job: generate_sbom
+      artifacts: true
+  rules:
+    - !reference [.default_mr_rules, rules]
+
+version:
+  extends: .version
+  stage: .pre
+  rules:
+    - !reference [.default_rules, rules]
+
+secret_detection:
+  stage: validate
+  rules:
+    - !reference [.mr_only_rules, rules]
+  allow_failure: false
+
+sonarqube:
+  extends: .sonarcloud-check
+  stage: validate
+  allow_failure: true
+  rules:
+    - !reference [.sonarqube_rules, rules]
+
+golang-lint:
+  extends: .golang-lint
+  stage: validate
+  rules:
+    - !reference [.mr_only_rules, rules]
+
+docker-build:
+  extends: .docker_build
+  stage: build
+  needs:
+    - job: gobuild
+      artifacts: true
+    - job: version
+      optional: true
+      artifacts: true        
+  rules:
+    - !reference [.docker_rules, rules]
 
 gobuild:
   variables:
@@ -23,3 +80,13 @@ gobuild:
   rules:
     - !reference [.default_mr_rules, rules]
 
+docker-push:
+  extends: .docker_push_gitlab
+  stage: publish
+  needs:
+    - job: gobuild
+      artifacts: true
+    - job: version
+      artifacts: true        
+  rules:
+    - !reference [.docker_publish_rules, rules]

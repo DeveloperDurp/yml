@@ -4,6 +4,7 @@ stages:
 variables:
   GO_VERSION: "1.22"
   GOLANGCI_LINT_VERISON: "v1.58.0"
+  UPLOAD_PACKAGE: "false"
 
 build_go:
   stage: deploy

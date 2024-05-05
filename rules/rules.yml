@@ -1,17 +1,46 @@
 .default_rules:
   rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH || $CI_COMMIT_BRANCH =~ '/^release/'
+    - if: $CI_PIPELINE_SOURCE == "push" && $CI_PIPELINE_SOURCE == $CI_DEFAULT_BRANCH 
+    - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH =~ '/^release/'
 
 .sonarqube_rules:
   rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH || $CI_COMMIT_BRANCH =~ '/^release/' || $CI_MERGE_REQUEST_IID
+    - if: $CI_MERGE_REQUEST_IID
+      exists:
+        - "sonar-project.properties"  
+    - if: $CI_PIPELINE_SOURCE == "push" && $CI_PIPELINE_SOURCE == $CI_DEFAULT_BRANCH 
+      exists:
+        - "sonar-project.properties"  
+    - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH =~ '/^release/'
       exists:
         - "sonar-project.properties"  
 
 .default_mr_rules:
   rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH || $CI_COMMIT_BRANCH =~ '/^release/' || $CI_MERGE_REQUEST_IID
+    - if: $CI_MERGE_REQUEST_IID
+    - if: $CI_PIPELINE_SOURCE == "push" && $CI_PIPELINE_SOURCE == $CI_DEFAULT_BRANCH 
+    - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH =~ '/^release/'
 
 .mr_only_rules:
   rules:
     - if: $CI_MERGE_REQUEST_IID
+
+.docker_rules:
+  rules:
+    - if: $CI_MERGE_REQUEST_IID
+      exists:
+        - "Dockerfile"  
+    - if: $CI_PIPELINE_SOURCE == "push" && $CI_PIPELINE_SOURCE == $CI_DEFAULT_BRANCH 
+      exists:
+        - "Dockerfile"  
+    - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH =~ '/^release/'
+      exists:
+        - "Dockerfile"  
+
+.docker_publish_rules:
+    - if: $CI_PIPELINE_SOURCE == "push" && $CI_PIPELINE_SOURCE == $CI_DEFAULT_BRANCH 
+      exists:
+        - "Dockerfile"  
+    - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH =~ '/^release/'
+      exists:
+        - "Dockerfile"  
