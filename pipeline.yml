@@ -8,13 +8,13 @@ variables:
 build_go:
   stage: deploy
   allow_failure: false
-  strategy: depend
   trigger: 
     include: 
     - project: 'developerdurp/yml'
       ref: 'main'
       file:
         - 'pipelines/go-build.yml'
+    strategy: depend
   rules:
     - exists:
       - "go.mod"  
