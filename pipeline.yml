@@ -10,9 +10,9 @@ variables:
   GRYPE_VERSION: "v0.77.2"
 
 include:
-  - template: Security/Secret-Detection.gitlab-ci.yml
   - project: 'developerdurp/yml'
     ref: 'main'
     file: 
+      - 'pipelines/compliance.yml'
       - 'pipelines/go-build.yml'
       - 'pipelines/linter.yml'
