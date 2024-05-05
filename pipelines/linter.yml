@@ -1,3 +1,6 @@
+stages:
+  - validate
+
 include:
   - project: 'developerdurp/yml'
     ref: 'main'

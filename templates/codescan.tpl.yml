@@ -2,7 +2,6 @@
   image: registry.internal.durp.info/anchore/syft:${SYFT_VERSION}
   script:
     - ./scripts/scanner/syft-mkdir.sh
-    - ./scripts/scanner/syft-go.sh
   artifacts:
     expire_in: 1 hour
     paths:
