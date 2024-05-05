@@ -1,13 +1,13 @@
 .terraform_fmt:
   script:
     - ./scripts/cd-workdir.sh
-    - ./scripts/terraform-fmt.sh
+    - ./scripts/terraform/fmt.sh
 
 .terraform_validate:
   script:
     - ./scripts/cd-workdir.sh
-    - ./scripts/terraform-init.sh
-    - ./scripts/terraform-validate.sh
+    - ./scripts/terraform/init.sh
+    - ./scripts/terraform/validate.sh
     
 .terraform_plan:
   variables:
@@ -15,8 +15,8 @@
     JSON_PLAN_FILE: tfplan.json
   script:
     - ./scripts/cd-workdir.sh
-    - ./scripts/terraform-init.sh
-    - ./scripts/terraform-plan.sh
+    - ./scripts/terraform/init.sh
+    - ./scripts/terraform/plan.sh
   artifacts:
     reports:
       terraform: $WORKDIR/$JSON_PLAN_FILE
@@ -25,11 +25,11 @@
 .terraform_apply:
   script:
     - ./scripts/cd-workdir.sh
-    - ./scripts/terraform-init.sh
-    - ./scripts/terraform-apply.sh
+    - ./scripts/terraform/init.sh
+    - ./scripts/terraform/apply.sh
 
 .terraform_destroy:
   script:
     - ./scripts/cd-workdir.sh
-    - ./scripts/terraform-init.sh
-    - ./scripts/terraform-destroy.sh
+    - ./scripts/terraform/init.sh
+    - ./scripts/terraform/destroy.sh
