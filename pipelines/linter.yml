@@ -1,0 +1,13 @@
+include:
+  - project: 'developerdurp/yml'
+    ref: 'main'
+    file: 
+      - 'jobs/golang.yml'
+
+golang-lint:
+  extends: .golang-lint
+  stage: validate
+  rules:
+    - if: $CI_MERGE_REQUEST_IID
+      exists:
+        - "go.mod"  

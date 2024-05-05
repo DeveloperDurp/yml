@@ -1,6 +1,7 @@
 stages:
-  - compliance
-  - deploy
+  - build
+  - validate
+  - publish 
 
 variables:
   GO_VERSION: "1.22"
@@ -8,29 +9,10 @@ variables:
   SYFT_VERSION: "v1.3.0"
   GRYPE_VERSION: "v0.77.2"
 
-gitlab_generic_package:
-  stage: deploy
-  needs: 
-    - job: compliance
-  trigger: 
-    include: 
-    - project: 'developerdurp/yml'
-      ref: 'main'
-      file:
-        - 'pipelines/gitlab_generic_packages.yml'
-  rules:
-    - if: '$PIPELINE =~ /gitlab/'
-
-build_go:
-  stage: deploy
-    #needs: 
-    #  - job: compliance
-  trigger: 
-    include: 
-    - project: 'developerdurp/yml'
-      ref: 'main'
-      file:
-        - 'pipelines/golang.yml'
-  rules:
-    - exists:
-      - "go.mod"  
+include:
+  - template: Security/Secret-Detection.gitlab-ci.yml
+  - project: 'developerdurp/yml'
+    ref: 'main'
+    file: 
+      - 'pipelines/go-build.yml'
+      - 'pipelines/linter.yml'

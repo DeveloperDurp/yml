@@ -1,0 +1,32 @@
+include:
+  - project: 'developerdurp/yml'
+    ref: 'main'
+    file: 
+      - 'jobs/docker.yml'
+
+docker-build:
+  extends: .docker_build
+  stage: build
+  needs:
+    - job: gobuild
+      artifacts: true
+    - job: version
+      optional: true
+      artifacts: true        
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH || $CI_COMMIT_BRANCH =~ '/^release/' || $CI_MERGE_REQUEST_IID
+      exists:
+      - "Dockerfile"  
+
+docker-push:
+  extends: .docker_push_gitlab
+  stage: publish
+  needs:
+    - job: gobuild
+      artifacts: true
+    - job: version
+      artifacts: true        
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH || $CI_COMMIT_BRANCH =~ '/^release/'
+      exists:
+        - "Dockerfile"  

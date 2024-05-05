@@ -6,27 +6,42 @@ include:
   - project: 'developerdurp/yml'
     ref: 'main'
     file: 
+      - 'jobs/version.yml'
       - 'jobs/sonarqube.yml'
       - 'jobs/golang.yml'
 
-secret_detection:
-  stage: compliance
+version:
+  extends: .version
+  stage: .pre
   rules:
-    - when: always
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH || $CI_COMMIT_BRANCH =~ '/^release/'
+
+secret_detection:
+  stage: validate
+  rules:
+    - if: $CI_MERGE_REQUEST_IID
   allow_failure: false
 
 sonarqube:
   extends: .sonarcloud-check
-  stage: compliance
+  stage: validate
   allow_failure: true
   rules:
-    - if: $CI_COMMIT_REF_NAME == 'main' || $CI_PIPELINE_SOURCE == 'merge_request_event'
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH || $CI_COMMIT_BRANCH =~ '/^release/' || $CI_MERGE_REQUEST_IID
       exists:
         - "sonar-project.properties"  
 
-golang-lint:
-  extends: .golang-lint
-  stage: compliance
+generate_sbom:
+  extends: .generate_sbom
+  stage: validate
   rules:
-    - exists:
-      - "go.mod"  
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH || $CI_COMMIT_BRANCH =~ '/^release/' || $CI_MERGE_REQUEST_IID
+
+generate_cve:
+  extends: .generate_cve
+  stage: validate
+  needs:
+    - job: generate_sbom
+      artifacts: true
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH || $CI_COMMIT_BRANCH =~ '/^release/' || $CI_MERGE_REQUEST_IID
