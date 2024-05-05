@@ -1,19 +1,18 @@
 stages:
   - build
-  - validate
-  - publish 
 
 variables:
   GO_VERSION: "1.22"
   GOLANGCI_LINT_VERISON: "v1.58.0"
 
-include:
-  - project: 'developerdurp/yml'
-    ref: 'main'
-    file: 
-      - 'pipelines/compliance.yml'
-      - 'pipelines/go-build.yml'
-      - 'pipelines/docker-build.yml'
-      - 'pipelines/linter.yml'
-      - 'pipelines/security.yml'
-      - 'rules/rules.yml'
+build_go:
+  stage: deploy
+  trigger: 
+    include: 
+    - project: 'developerdurp/yml'
+      ref: 'main'
+      file:
+        - 'pipelines/go-build.yml'
+  rules:
+      exists:
+      - "go.mod"  

@@ -1,5 +1,7 @@
 stages:
   - build
+  - validate
+  - publish 
 
 include:
   - template: Security/Secret-Detection.gitlab-ci.yml
@@ -7,6 +9,12 @@ include:
     ref: 'main'
     file: 
       - 'jobs/golang.yml'
+      - 'pipelines/compliance.yml'
+      - 'pipelines/go-build.yml'
+      - 'pipelines/docker-build.yml'
+      - 'pipelines/linter.yml'
+      - 'pipelines/security.yml'
+      - 'rules/rules.yml'
 
 gobuild:
   variables:
@@ -15,6 +23,4 @@ gobuild:
   stage: build
   rules:
     - !reference [.default_mr_rules, rules]
-      exists:
-        - "go.mod"  
 
