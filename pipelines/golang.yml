@@ -13,6 +13,7 @@ include:
       - 'jobs/sonarqube.yml'
       - 'jobs/golang.yml'
       - 'jobs/docker.yml'
+      - 'jobs/codescan.yml'
 
 secret_detection:
   stage: validate
