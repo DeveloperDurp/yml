@@ -1,0 +1,36 @@
+.generate_sbom:
+  image: registry.internal.durp.info/anchore/syft:${SYFT_VERSION}
+  script:
+    # Begin of syft-mkdir.sh
+    - |
+      #mkdir for syft files
+      mkdir $CI_PROJECT_DIR/syft
+    # End of syft-mkdir.sh
+
+    # Begin of syft-go.sh
+    - |
+      #Syft scan for go
+      if [ -f "go.mod" ]; then
+          syft go.mod -o cyclonedx-json=syft/${CI_PROJECT_NAME}.sbom.json
+      fi
+    # End of syft-go.sh
+  artifacts:
+    expire_in: 1 hour
+    paths:
+      - $CI_PROJECT_DIR/syft
+.generate_cve:
+  image: registry.internal.durp.info/anchore/grype:${GRYPE_VERSION}
+  script:
+    # Begin of grype.sh
+    - |
+      #grype scan sboms
+      for i in syft/*.sbom.json;
+      do filename=${i%*.sbom.json};
+        filename=${filename##/};
+        grype syft/$i -o json --file syft/$filename.cve.json;
+      done
+    # End of grype.sh
+  artifacts:
+    expire_in: 1 hour
+    paths:
+      - $CI_PROJECT_DIR/syft
