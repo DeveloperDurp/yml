@@ -1,0 +1,27 @@
+stages:
+  - build
+
+include:
+  - project: 'developerdurp/yml'
+    ref: 'main'
+    file: 
+      - 'jobs/codescan.yml'
+
+generate_sbom:
+  extends: .generate_sbom
+  stage: build
+  needs:
+    - job: docker-build
+      optional: true
+      artifacts: true
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH || $CI_COMMIT_BRANCH =~ '/^release/' || $CI_MERGE_REQUEST_IID
+
+generate_cve:
+  extends: .generate_cve
+  stage: build
+  needs:
+    - job: generate_sbom
+      artifacts: true
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH || $CI_COMMIT_BRANCH =~ '/^release/' || $CI_MERGE_REQUEST_IID

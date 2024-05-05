@@ -7,7 +7,6 @@ include:
     ref: 'main'
     file: 
       - 'jobs/version.yml'
-      - 'jobs/codescan.yml'
       - 'jobs/sonarqube.yml'
       - 'jobs/golang.yml'
 
@@ -31,22 +30,3 @@ sonarqube:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH || $CI_COMMIT_BRANCH =~ '/^release/' || $CI_MERGE_REQUEST_IID
       exists:
         - "sonar-project.properties"  
-
-generate_sbom:
-  extends: .generate_sbom
-  stage: validate
-  needs:
-    - job: docker-build
-      optional: true
-      artifacts: true
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH || $CI_COMMIT_BRANCH =~ '/^release/' || $CI_MERGE_REQUEST_IID
-
-generate_cve:
-  extends: .generate_cve
-  stage: validate
-  needs:
-    - job: generate_sbom
-      artifacts: true
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH || $CI_COMMIT_BRANCH =~ '/^release/' || $CI_MERGE_REQUEST_IID
