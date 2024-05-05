@@ -19,7 +19,7 @@ version:
 secret_detection:
   stage: validate
   rules:
-    - if: $CI_MERGE_REQUEST_IID
+    - !reference [.mr_only_rules, rules]
   allow_failure: false
 
 sonarqube:

@@ -14,7 +14,7 @@ gobuild:
   extends: .golang-build
   stage: build
   rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH || $CI_COMMIT_BRANCH =~ '/^release/' || $CI_MERGE_REQUEST_IID
+    - !reference [.default_mr_rules, rules]
       exists:
         - "go.mod"  
 

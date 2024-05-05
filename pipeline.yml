@@ -17,4 +17,3 @@ include:
       - 'pipelines/linter.yml'
       - 'pipelines/security.yml'
       - 'rules/rules.yml'
-      - 'rules/mr-rules.yml'
