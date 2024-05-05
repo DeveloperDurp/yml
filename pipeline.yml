@@ -14,5 +14,5 @@ build_go:
       file:
         - 'pipelines/go-build.yml'
   rules:
-    exists:
+    - exists:
       - "go.mod"  
