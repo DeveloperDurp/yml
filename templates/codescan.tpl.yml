@@ -4,6 +4,7 @@
     - ./scripts/scanner/syft-install.sh
     - ./scripts/scanner/syft-mkdir.sh
     - ./scripts/scanner/syft-go.sh
+    - ./scripts/scanner/syft-docker.sh
   artifacts:
     expire_in: 1 hour
     paths:
