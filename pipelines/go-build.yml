@@ -89,5 +89,4 @@ docker-push:
     - job: version
       artifacts: true        
   rules:
-    - !reference [.default_mr_rules, rules]
-      #- !reference [.docker_publish_rules, rules]
+    - !reference [.docker_publish_rules, rules]
