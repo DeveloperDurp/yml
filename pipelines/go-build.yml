@@ -10,49 +10,17 @@ include:
     file: 
       - 'jobs/golang.yml'
       - 'jobs/version.yml'
-      - 'jobs/sonarqube.yml'
       - 'jobs/golang.yml'
       - 'jobs/docker.yml'
-      - 'jobs/codescan.yml'
       - 'rules/rules.yml'
+      - 'pipelines/templates/security'
 
-generate_sbom:
-  extends: .generate_sbom
-  stage: build
-  needs:
-    - job: docker-build
-      optional: true
-      artifacts: true
-  rules:
-    - !reference [.mr_only_rules, rules]
-
-generate_cve:
-  extends: .generate_cve
-  stage: build
-  needs:
-    - job: generate_sbom
-      artifacts: true
-  rules:
-    - !reference [.mr_only_rules, rules]
 
 version:
   extends: .version
   stage: .pre
   rules:
     - !reference [.default_rules, rules]
-
-secret_detection:
-  stage: validate
-  rules:
-    - !reference [.mr_only_rules, rules]
-  allow_failure: false
-
-sonarqube:
-  extends: .sonarcloud-check
-  stage: validate
-  allow_failure: true
-  rules:
-    - !reference [.sonarqube_rules, rules]
 
 golang-lint:
   extends: .golang-lint

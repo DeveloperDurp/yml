@@ -1,0 +1,43 @@
+stages:
+  - build
+
+include:
+  - template: Security/Secret-Detection.gitlab-ci.yml
+  - project: 'developerdurp/yml'
+    ref: 'main'
+    file: 
+      - 'jobs/codescan.yml'
+      - 'jobs/sonarqube.yml'
+      - 'rules/rules.yml'
+
+secret_detection:
+  stage: validate
+  rules:
+    - !reference [.mr_only_rules, rules]
+  allow_failure: false
+
+generate_sbom:
+  extends: .generate_sbom
+  stage: build
+  needs:
+    - job: docker-build
+      optional: true
+      artifacts: true
+  rules:
+    - !reference [.mr_only_rules, rules]
+
+generate_cve:
+  extends: .generate_cve
+  stage: build
+  needs:
+    - job: generate_sbom
+      artifacts: true
+  rules:
+    - !reference [.mr_only_rules, rules]
+
+sonarqube:
+  extends: .sonarcloud-check
+  stage: validate
+  allow_failure: true
+  rules:
+    - !reference [.sonarqube_rules, rules]
