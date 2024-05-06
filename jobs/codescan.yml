@@ -29,7 +29,6 @@
         filename="$(basename -- "$filename")"
         syft $i -o cyclonedx-json=syft/$filename.docker.sbom.json;
       done
-      ${version%.*.*.*.tar.gz}
     # End of syft-docker.sh
   artifacts:
     expire_in: 1 hour
