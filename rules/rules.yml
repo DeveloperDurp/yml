@@ -8,10 +8,10 @@
     - if: $CI_MERGE_REQUEST_IID
       exists:
         - "sonar-project.properties"  
-    - if: $CI_PIPELINE_SOURCE == "push" && $CI_PIPELINE_SOURCE == $CI_DEFAULT_BRANCH 
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH 
       exists:
         - "sonar-project.properties"  
-    - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH =~ '/^release/'
+    - if: $CI_COMMIT_BRANCH =~ '/^release/'
       exists:
         - "sonar-project.properties"  
 
