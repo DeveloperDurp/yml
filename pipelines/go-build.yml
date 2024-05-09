@@ -16,11 +16,11 @@ include:
       - 'pipelines/templates/security.yml'
 
 
-version:
-  extends: .version
-  stage: .pre
-  rules:
-    - !reference [.default_rules, rules]
+        #version:
+        #  extends: .version
+        #  stage: .pre
+        #  rules:
+        #    - !reference [.default_rules, rules]
 
 golang-lint:
   extends: .golang-lint
