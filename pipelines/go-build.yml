@@ -9,18 +9,10 @@ include:
     ref: 'main'
     file: 
       - 'jobs/golang.yml'
-      - 'jobs/version.yml'
       - 'jobs/golang.yml'
       - 'jobs/docker.yml'
       - 'rules/rules.yml'
       - 'pipelines/templates/security.yml'
-
-
-        #version:
-        #  extends: .version
-        #  stage: .pre
-        #  rules:
-        #    - !reference [.default_rules, rules]
 
 golang-lint:
   extends: .golang-lint
@@ -36,9 +28,6 @@ docker-build:
       artifacts: true
     - pipeline: $PARENT_PIPELINE_ID
       job: version
-        #- job: version
-        #  optional: true
-        #  artifacts: true        
   rules:
     - !reference [.docker_rules, rules]
 
@@ -54,7 +43,7 @@ docker-push:
   extends: .docker_push_gitlab
   stage: publish
   needs:
-    - job: gobuild
+    - job: docker-build
       artifacts: true
     - pipeline: $PARENT_PIPELINE_ID
       job: version
