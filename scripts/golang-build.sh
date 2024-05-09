@@ -13,7 +13,7 @@ go mod download
 if grep -q "swag" go.mod; then
     echo "Found 'swag' in go.mod. Running swag init..."
     go install github.com/swaggo/swag/cmd/swag@latest
-    swag init
+    swag init --parseDependency
 fi
 
 CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o ./output/main .
