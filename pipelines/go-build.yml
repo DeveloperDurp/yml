@@ -34,9 +34,9 @@ docker-build:
   needs:
     - job: gobuild
       artifacts: true
-    - job: version
-      optional: true
-      artifacts: true        
+        #- job: version
+        #  optional: true
+        #  artifacts: true        
   rules:
     - !reference [.docker_rules, rules]
 
@@ -54,7 +54,7 @@ docker-push:
   needs:
     - job: gobuild
       artifacts: true
-    - job: version
-      artifacts: true        
+        #- job: version
+        #  artifacts: true        
   rules:
     - !reference [.docker_publish_rules, rules]
