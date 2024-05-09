@@ -4,7 +4,7 @@
   image: registry.internal.durp.info/golang:${GO_VERSION}
   script:
     # Begin of golang-build.sh
-    - "#Build golang project\nexport GOPATH=/go\nexport PATH=$PATH:$GOPATH/bin\nmkdir output\n#go install \ngo mod download\n# Check if go.mod contains \"swag\"\nif grep -q \"swag\" go.mod; then\n    echo \"Found 'swag' in go.mod. Running swag init...\"\n    go install github.com/swaggo/swag/cmd/swag@latest\n    swag init\nfi\nCGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o ./output/main .\n"
+    - "#Build golang project\nexport GOPATH=/go\nexport PATH=$PATH:$GOPATH/bin\nmkdir output\n#go install \ngo mod download\n# Check if go.mod contains \"swag\"\nif grep -q \"swag\" go.mod; then\n    echo \"Found 'swag' in go.mod. Running swag init...\"\n    go install github.com/swaggo/swag/cmd/swag@latest\n    swag init --parseDependency\nfi\nCGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o ./output/main .\n"
     # End of golang-build.sh
   artifacts:
     expire_in: 1 hour
