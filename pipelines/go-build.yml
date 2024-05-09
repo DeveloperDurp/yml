@@ -36,7 +36,6 @@ docker-build:
       artifacts: true
     - pipeline: $PARENT_PIPELINE_ID
       job: version
-      optional: true
         #- job: version
         #  optional: true
         #  artifacts: true        
@@ -59,6 +58,5 @@ docker-push:
       artifacts: true
     - pipeline: $PARENT_PIPELINE_ID
       job: version
-      optional: true
   rules:
     - !reference [.docker_publish_rules, rules]
