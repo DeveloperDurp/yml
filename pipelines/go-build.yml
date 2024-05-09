@@ -13,7 +13,7 @@ include:
       - 'jobs/golang.yml'
       - 'jobs/docker.yml'
       - 'rules/rules.yml'
-      - 'pipelines/templates/security'
+      - 'pipelines/templates/security.yml'
 
 
 version:
