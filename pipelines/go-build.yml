@@ -34,6 +34,9 @@ docker-build:
   needs:
     - job: gobuild
       artifacts: true
+    - pipeline: $PARENT_PIPELINE_ID
+      job: version
+      optional: true
         #- job: version
         #  optional: true
         #  artifacts: true        
@@ -54,7 +57,8 @@ docker-push:
   needs:
     - job: gobuild
       artifacts: true
-        #- job: version
-        #  artifacts: true        
+    - pipeline: $PARENT_PIPELINE_ID
+      job: version
+      optional: true
   rules:
     - !reference [.docker_publish_rules, rules]
