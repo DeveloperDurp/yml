@@ -6,8 +6,8 @@ echo "
 deploy_$VERSION:
   stage: deploy
   needs:
-    - job: build
-      optional: true
+    - pipeline: $PARENT_PIPELINE_ID
+      job: version
   script:
     - echo "Deploy to staging server"
   environment:
