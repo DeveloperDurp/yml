@@ -39,7 +39,7 @@
   needs:
     - job: version
       artifacts: true
-generate-config:
+.generate-config:
   stage: build
   needs:
     - job: version
