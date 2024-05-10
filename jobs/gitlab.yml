@@ -46,7 +46,7 @@
       artifacts: true
   script:
     # Begin of create-environment.sh
-    - "#test deployment\necho \"\n$VERSION:\n  stage: deploy\n  needs:\n    - job: Test_Job \n  script:\n    - echo \"Deploy to $ENVIRONMENT server\"\n\" > generated-config.yml\n"
+    - "#test deployment\necho \"\nTest_Job:\n  stage: deploy\n  script:\n    - echo \"Test job\"\n$VERSION:\n  stage: deploy\n  needs:\n    - job: Test_Job \n  script:\n    - echo \"Deploy to $ENVIRONMENT server\"\n\" > generated-config.yml\n"
     # End of create-environment.sh
   artifacts:
     expire_in: never
