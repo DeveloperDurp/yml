@@ -30,5 +30,6 @@
   script:
     - ./scripts/gitlab/create-environment.sh
   artifacts:
+    expire_in: never
     paths:
       - generated-config.yml
