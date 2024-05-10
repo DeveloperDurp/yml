@@ -39,5 +39,6 @@
       cat version.env
     # End of version.sh
   artifacts:
+    expire_in: never
     reports:
       dotenv: version.env
