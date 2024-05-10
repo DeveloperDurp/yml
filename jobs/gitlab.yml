@@ -52,9 +52,9 @@
       $VERSION:
         stage: deploy
         script:
-          - echo "Deploy to staging server"
+          - echo \"Deploy to staging server\"
         environment:
-          name: staging
+          name: $ENVIRONMENT
       " > generated-config.yml
     # End of create-environment.sh
   artifacts:
