@@ -24,6 +24,7 @@
 
 generate-config:
   stage: build
+  script:
     - ./scripts/gitlab/create-environment.sh
   artifacts:
     paths:
