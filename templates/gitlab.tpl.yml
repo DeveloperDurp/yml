@@ -24,6 +24,9 @@
 
 generate-config:
   stage: build
+  needs:
+    - pipeline: $PARENT_PIPELINE_ID
+      job: version
   script:
     - ./scripts/gitlab/create-environment.sh
   artifacts:
