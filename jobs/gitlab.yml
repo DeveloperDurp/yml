@@ -40,7 +40,23 @@
     - job: version
       artifacts: true
 generate-config:
-  stage: build - ./scripts/gitlab/create-environment.sh
+  stage: build
+  script:
+    # Begin of create-environment.sh
+    - |
+      #test deployment
+      echo "
+      deploy_$VERSION:
+        stage: deploy
+        needs:
+          - pipeline: $PARENT_PIPELINE_ID
+            job: version
+        script:
+          - echo "Deploy to staging server"
+        environment:
+          name: staging
+      " > generated-config.yml
+    # End of create-environment.sh
   artifacts:
     paths:
       - generated-config.yml
