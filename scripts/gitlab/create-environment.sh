@@ -3,7 +3,7 @@
 #test deployment
 
 echo "
-deploy_$VERSION:
+$VERSION:
   stage: deploy
   script:
     - echo "Deploy to staging server"
