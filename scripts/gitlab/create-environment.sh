@@ -3,6 +3,11 @@
 #test deployment
 
 echo "
+Test_Job:
+  stage: deploy
+  script:
+    - echo "Test job"
+
 $VERSION:
   stage: deploy
   needs:
