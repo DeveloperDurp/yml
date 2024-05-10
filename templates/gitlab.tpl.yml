@@ -21,3 +21,10 @@
   needs: 
     - job: version
       artifacts: true
+
+generate-config:
+  stage: build
+    - ./scripts/gitlab/create-environment.sh
+  artifacts:
+    paths:
+      - generated-config.yml
