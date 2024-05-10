@@ -46,16 +46,7 @@
       artifacts: true
   script:
     # Begin of create-environment.sh
-    - |
-      #test deployment
-      echo "
-      $VERSION:
-        stage: deploy
-        script:
-          - echo "Deploy to staging server"
-        environment:
-          name: $ENVIRONMENT
-      " > generated-config.yml
+    - "#test deployment\necho \"\nTest_Job:\n  stage: deploy\n  script:\n    - echo \"Test job\"\n  environment:\n    name: $ENVIRONMENT\n$VERSION:\n  stage: deploy\n  needs:\n    - job: Test_Job \n  script:\n    - echo \"Deploy to $ENVIRONMENT server\"\n  environment:\n    name: $ENVIRONMENT\n\" > generated-config.yml\n"
     # End of create-environment.sh
   artifacts:
     paths:
