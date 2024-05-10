@@ -6,7 +6,7 @@ echo "
 $VERSION:
   stage: deploy
   script:
-    - echo \"Deploy to staging server\"
+    - echo "Deploy to staging server"
   environment:
     name: $ENVIRONMENT
 " > generated-config.yml
