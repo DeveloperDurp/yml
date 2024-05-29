@@ -5,6 +5,7 @@
 echo "
 $VERSION:
   stage: deploy
+  image: mcr.microsoft.com/powershell:latest
   script:
 " >> generated-config.yml
 
