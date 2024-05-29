@@ -12,14 +12,14 @@ $VERSION:
 echo '
     - |
       pwsh -c "Install-Module -Name powershell-yaml -Confirm:\$false -Force
-      \$template = (Invoke-RestMethod -Headers @{ 'PRIVATE-TOKEN'= \$ENV:GITLAB_TOKEN } -Uri \"https://gitlab.com/api/v4/projects/45028985/repository/files/durpapi%2FChart.yaml/raw?ref=dev\") | ConvertFrom-Yaml
+      \$template = (Invoke-RestMethod -Headers @{ "PRIVATE-TOKEN"= \$ENV:GITLAB_TOKEN } -Uri \"https://gitlab.com/api/v4/projects/45028985/repository/files/durpapi%2FChart.yaml/raw?ref=dev\") | ConvertFrom-Yaml
       \$template.version = \$ENV:VERSION
       \$body = @{
         branch = \"main\"
         commit_message = \"Update Chart\"
         content = \"\$(\$template | convertto-yaml)\"
       } | ConvertTo-Json
-      Invoke-RestMethod -Headers @{ 'PRIVATE-TOKEN'= \$ENV:GITLAB_TOKEN } -ContentType \"application/json\" -Method Put -body \$body -Uri \"https://gitlab.com/api/v4/projects/45028985/repository/files/durpapi%2FChart.yaml\""
+      Invoke-RestMethod -Headers @{ "PRIVATE-TOKEN"= \$ENV:GITLAB_TOKEN } -ContentType \"application/json\" -Method Put -body \$body -Uri \"https://gitlab.com/api/v4/projects/45028985/repository/files/durpapi%2FChart.yaml\""
 ' >> generated-config.yml
 
 echo "
