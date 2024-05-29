@@ -46,7 +46,26 @@
       artifacts: true
   script:
     # Begin of create-environment.sh
-    - "#test deployment\necho \"\n$VERSION:\n  stage: deploy\n  needs:\n    - job: Test_Job \n  script:\n    - echo \"Deploy to $ENVIRONMENT server\"\n  environment:\n    name: $ENVIRONMENT\n\" > generated-config.yml\n"
+    - |
+      #test deployment
+      echo "
+      $VERSION:
+        stage: deploy
+        script:
+          - |
+            pwsh -c "Install-Module -Name powershell-yaml -Confirm:\$false -Force
+            \$template = (Invoke-RestMethod -Headers @{ 'PRIVATE-TOKEN'= \$ENV:GITLAB_TOKEN } -Uri \"https://gitlab.com/api/v4/projects/45028985/repository/files/durpapi%2FChart.yaml/raw?ref=dev\") | ConvertFrom-Yaml
+            \$template.version = \$ENV:VERSION
+            \$body = @{
+              branch = \"main\"
+              commit_message = \"Update Chart\"
+              content = \"\$(\$template | convertto-yaml)\"
+            } | ConvertTo-Json
+            Invoke-RestMethod -Headers @{ 'PRIVATE-TOKEN'= \$ENV:GITLAB_TOKEN } -ContentType \"application/json\" -Method Put -body \$body -Uri \"https://gitlab.com/api/v4/projects/45028985/repository/files/durpapi%2FChart.yaml\""
+          # End of update-chart.sh
+        environment:
+          name: $ENVIRONMENT
+      " > generated-config.yml
     # End of create-environment.sh
   artifacts:
     expire_in: never
