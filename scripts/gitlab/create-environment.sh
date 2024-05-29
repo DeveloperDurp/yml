@@ -5,8 +5,6 @@
 echo "
 $VERSION:
   stage: deploy
-  needs:
-    - job: Test_Job 
   script:
     - echo "Deploy to $ENVIRONMENT server"
   environment:
