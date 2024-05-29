@@ -23,6 +23,9 @@ echo '
 ' >> generated-config.yml
 
 echo "
+  needs:
+    - job: version
+      artifacts: true
   environment:
     name: $ENVIRONMENT
 " >> generated-config.yml
