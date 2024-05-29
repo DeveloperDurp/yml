@@ -21,7 +21,7 @@ golang-lint:
     - !reference [.mr_only_rules, rules]
 
 docker-build:
-  extends: .docker_build
+  extends: .docker-build-container
   stage: build
   needs:
     - job: gobuild
@@ -39,13 +39,23 @@ gobuild:
   rules:
     - !reference [.default_mr_rules, rules]
 
-docker-push:
-  extends: .docker_push_gitlab
-  stage: publish
-  needs:
-    - job: docker-build
-      artifacts: true
-    - pipeline: $PARENT_PIPELINE_ID
-      job: version
-  rules:
-    - !reference [.docker_publish_rules, rules]
+      #docker-build:
+      #  extends: .docker_build
+      #  stage: build
+      #  needs:
+      #    - job: gobuild
+      #      artifacts: true
+      #    - pipeline: $PARENT_PIPELINE_ID
+      #      job: version
+      #  rules:
+      #    - !reference [.docker_rules, rules]
+      #docker-push:
+      #  extends: .docker_push_gitlab
+      #  stage: publish
+      #  needs:
+      #    - job: docker-build
+      #      artifacts: true
+      #    - pipeline: $PARENT_PIPELINE_ID
+      #      job: version
+      #  rules:
+      #    - !reference [.docker_publish_rules, rules]
