@@ -42,7 +42,7 @@
     # End of init.sh
 
     # Begin of plan.sh
-    - "#Terraform plan    \napk add --update curl jq\nalias convert_report=\"jq -r '([.resource_changes[].change.actions?]|flatten)|{\\\"create\\\":(map(select(.==\\\"create\\\"))|length),\\\"update\\\":(map(select(.==\\\"update\\\"))|length),\\\"delete\\\":(map(select(.==\\\"delete\\\"))|length)}'\"\ntofu plan -out=$PLAN $ARGUMENTS\ntofu show --json $PLAN | convert_report > $JSON_PLAN_FILE\n"
+    - "#Terraform plan    \napk add --update curl jq \nalias convert_report=\"jq -r '([.resource_changes[].change.actions?]|flatten)|{\\\"create\\\":(map(select(.==\\\"create\\\"))|length),\\\"update\\\":(map(select(.==\\\"update\\\"))|length),\\\"delete\\\":(map(select(.==\\\"delete\\\"))|length)}'\"\ntofu plan -out=$PLAN $ARGUMENTS\ntofu show --json $PLAN | jq -r '([.resource_changes[].change.actions?]|flatten)|{\"create\":(map(select(.==\"create\"))|length),\"update\":(map(select(.==\"update\"))|length),\"delete\":(map(select(.==\"delete\"))|length)}' > $JSON_PLAN_FILE\n"
     # End of plan.sh
   artifacts:
     reports:
