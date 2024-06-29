@@ -9,7 +9,7 @@
     # Begin of fmt.sh
     - |
       #Terraform fmt
-      terraform fmt -diff -check -write=false
+      tofu fmt -diff -check -write=false
     # End of fmt.sh
 .terraform_validate:
   script:
@@ -20,11 +20,11 @@
     # End of cd-workdir.sh
 
     # Begin of init.sh
-    - "#Terraform init    \nterraform init -reconfigure -backend-config=\"address=${GITLAB_TF_ADDRESS}\" -backend-config=\"lock_address=${GITLAB_TF_ADDRESS}/lock\" -backend-config=\"unlock_address=${GITLAB_TF_ADDRESS}/lock\" -backend-config=\"username=gitlab-ci-token\" -backend-config=\"password=${CI_JOB_TOKEN}\" -backend-config=\"lock_method=POST\" -backend-config=\"unlock_method=DELETE\" -backend-config=\"retry_wait_min=5\"  \n"
+    - "#Terraform init    \ntofu init -reconfigure -backend-config=\"address=${GITLAB_TF_ADDRESS}\" -backend-config=\"lock_address=${GITLAB_TF_ADDRESS}/lock\" -backend-config=\"unlock_address=${GITLAB_TF_ADDRESS}/lock\" -backend-config=\"username=gitlab-ci-token\" -backend-config=\"password=${CI_JOB_TOKEN}\" -backend-config=\"lock_method=POST\" -backend-config=\"unlock_method=DELETE\" -backend-config=\"retry_wait_min=5\"  \n"
     # End of init.sh
 
     # Begin of validate.sh
-    - "#Terraform validate\nterraform validate    \n"
+    - "#Terraform validate\ntofu validate    \n"
     # End of validate.sh
 .terraform_plan:
   variables:
@@ -38,11 +38,11 @@
     # End of cd-workdir.sh
 
     # Begin of init.sh
-    - "#Terraform init    \nterraform init -reconfigure -backend-config=\"address=${GITLAB_TF_ADDRESS}\" -backend-config=\"lock_address=${GITLAB_TF_ADDRESS}/lock\" -backend-config=\"unlock_address=${GITLAB_TF_ADDRESS}/lock\" -backend-config=\"username=gitlab-ci-token\" -backend-config=\"password=${CI_JOB_TOKEN}\" -backend-config=\"lock_method=POST\" -backend-config=\"unlock_method=DELETE\" -backend-config=\"retry_wait_min=5\"  \n"
+    - "#Terraform init    \ntofu init -reconfigure -backend-config=\"address=${GITLAB_TF_ADDRESS}\" -backend-config=\"lock_address=${GITLAB_TF_ADDRESS}/lock\" -backend-config=\"unlock_address=${GITLAB_TF_ADDRESS}/lock\" -backend-config=\"username=gitlab-ci-token\" -backend-config=\"password=${CI_JOB_TOKEN}\" -backend-config=\"lock_method=POST\" -backend-config=\"unlock_method=DELETE\" -backend-config=\"retry_wait_min=5\"  \n"
     # End of init.sh
 
     # Begin of plan.sh
-    - "#Terraform plan    \napk add --update curl jq\nalias convert_report=\"jq -r '([.resource_changes[].change.actions?]|flatten)|{\\\"create\\\":(map(select(.==\\\"create\\\"))|length),\\\"update\\\":(map(select(.==\\\"update\\\"))|length),\\\"delete\\\":(map(select(.==\\\"delete\\\"))|length)}'\"\nterraform plan -out=$PLAN $ARGUMENTS\nterraform show --json $PLAN | convert_report > $JSON_PLAN_FILE\n"
+    - "#Terraform plan    \napk add --update curl jq\nalias convert_report=\"jq -r '([.resource_changes[].change.actions?]|flatten)|{\\\"create\\\":(map(select(.==\\\"create\\\"))|length),\\\"update\\\":(map(select(.==\\\"update\\\"))|length),\\\"delete\\\":(map(select(.==\\\"delete\\\"))|length)}'\"\ntofu plan -out=$PLAN $ARGUMENTS\ntofu show --json $PLAN | convert_report > $JSON_PLAN_FILE\n"
     # End of plan.sh
   artifacts:
     reports:
@@ -56,13 +56,13 @@
     # End of cd-workdir.sh
 
     # Begin of init.sh
-    - "#Terraform init    \nterraform init -reconfigure -backend-config=\"address=${GITLAB_TF_ADDRESS}\" -backend-config=\"lock_address=${GITLAB_TF_ADDRESS}/lock\" -backend-config=\"unlock_address=${GITLAB_TF_ADDRESS}/lock\" -backend-config=\"username=gitlab-ci-token\" -backend-config=\"password=${CI_JOB_TOKEN}\" -backend-config=\"lock_method=POST\" -backend-config=\"unlock_method=DELETE\" -backend-config=\"retry_wait_min=5\"  \n"
+    - "#Terraform init    \ntofu init -reconfigure -backend-config=\"address=${GITLAB_TF_ADDRESS}\" -backend-config=\"lock_address=${GITLAB_TF_ADDRESS}/lock\" -backend-config=\"unlock_address=${GITLAB_TF_ADDRESS}/lock\" -backend-config=\"username=gitlab-ci-token\" -backend-config=\"password=${CI_JOB_TOKEN}\" -backend-config=\"lock_method=POST\" -backend-config=\"unlock_method=DELETE\" -backend-config=\"retry_wait_min=5\"  \n"
     # End of init.sh
 
     # Begin of apply.sh
     - |
       #Terraform validate
-      terraform apply -auto-approve $ARGUMENTS
+      tofu apply -auto-approve $ARGUMENTS
     # End of apply.sh
 .terraform_destroy:
   script:
@@ -73,11 +73,11 @@
     # End of cd-workdir.sh
 
     # Begin of init.sh
-    - "#Terraform init    \nterraform init -reconfigure -backend-config=\"address=${GITLAB_TF_ADDRESS}\" -backend-config=\"lock_address=${GITLAB_TF_ADDRESS}/lock\" -backend-config=\"unlock_address=${GITLAB_TF_ADDRESS}/lock\" -backend-config=\"username=gitlab-ci-token\" -backend-config=\"password=${CI_JOB_TOKEN}\" -backend-config=\"lock_method=POST\" -backend-config=\"unlock_method=DELETE\" -backend-config=\"retry_wait_min=5\"  \n"
+    - "#Terraform init    \ntofu init -reconfigure -backend-config=\"address=${GITLAB_TF_ADDRESS}\" -backend-config=\"lock_address=${GITLAB_TF_ADDRESS}/lock\" -backend-config=\"unlock_address=${GITLAB_TF_ADDRESS}/lock\" -backend-config=\"username=gitlab-ci-token\" -backend-config=\"password=${CI_JOB_TOKEN}\" -backend-config=\"lock_method=POST\" -backend-config=\"unlock_method=DELETE\" -backend-config=\"retry_wait_min=5\"  \n"
     # End of init.sh
 
     # Begin of destroy.sh
     - |
       #Terraform validate
-      terraform destroy -auto-approve $ARGUMENTS
+      tofu destroy -auto-approve $ARGUMENTS
     # End of destroy.sh
