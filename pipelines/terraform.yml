@@ -32,9 +32,7 @@ plan-development:
   environment:
     name: development
   variables:
-    ARGUMENTS: -var-file=terraform.tfvars
-    environment: dev
-    ENVIRONMENT_NAME: development
+    ENVIRONMENT_NAME: dev
   allow_failure: false
   extends: .terraform_plan
   needs: ["validate","format"]
@@ -44,9 +42,7 @@ plan-production:
   environment:
     name: production
   variables:
-    ARGUMENTS: -var-file=terraform.tfvars
-    environment: prd
-    ENVIRONMENT_NAME: production
+    ENVIRONMENT_NAME: prd
   allow_failure: false
   extends: .terraform_plan
   needs: ["validate","format"]  
@@ -56,9 +52,7 @@ apply-development:
   environment:
     name: development
   variables:
-    ARGUMENTS: -var-file=terraform.tfvars
-    environment: dev
-    ENVIRONMENT_NAME: development
+    ENVIRONMENT_NAME: dev
   allow_failure: false
   extends: .terraform_apply   
   rules:
@@ -69,9 +63,7 @@ apply-production:
   environment:
     name: production
   variables:
-    ARGUMENTS: -var-file=terraform.tfvars
-    environment: prd
-    ENVIRONMENT_NAME: production
+    ENVIRONMENT_NAME: prd
   allow_failure: false
   extends: .terraform_apply   
   rules:
@@ -82,9 +74,7 @@ destroy-development:
   environment:
     name: development
   variables:
-    ARGUMENTS: -var-file=terraform.tfvars
-    environment: dev
-    ENVIRONMENT_NAME: development
+    ENVIRONMENT_NAME: dev
   allow_failure: false
   extends: .terraform_destroy  
   needs: ["apply-development"]
@@ -96,9 +86,7 @@ destroy-production:
   environment:
     name: production
   variables:
-    ARGUMENTS: -var-file=terraform.tfvars
-    environment: prd
-    ENVIRONMENT_NAME: production
+    ENVIRONMENT_NAME: prd
   allow_failure: false
   extends: .terraform_destroy  
   needs: ["apply-production"]
